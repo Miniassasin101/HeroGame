@@ -29,7 +29,7 @@ func _ready():
 	find_and_print_path(Vector3(0, 3, 1), Vector3(5, 0, 2))
 	
 func _movement_var_collecter(mpos):
-	var movechar = get_node("../../../Combatants/Player Combatant Group/Unit 1/Controllers/Animation Controller/" + LevelBus.selected_unit)
+	var movechar = get_node("../../../Combatants/Player Combatant Group/" + LevelBus.unit_key + "/Controllers/Animation Controller/" + LevelBus.selected_unit)
 	print("MoveVarCol:")
 	print(mpos)
 	print("Enemy Check: ")
@@ -62,7 +62,7 @@ func find_path_and_move_sprite(start_pos: Vector3, end_pos: Vector3):
 
 func move_sprite_along_path(path: PackedVector3Array):
 	var tween = get_tree().create_tween()
-	var movechar = get_node("../../../Combatants/Player Combatant Group/Unit 1/Controllers/Animation Controller/" + LevelBus.selected_unit)
+	var movechar = get_node("../../../Combatants/Player Combatant Group/" + LevelBus.unit_key + "/Controllers/Animation Controller/" + LevelBus.selected_unit)
 	var duration_per_segment = 0.3 # Adjust based on how fast you want the sprite to move
 	for i in range(path.size() - 1):
 		var to_position = path[i + 1]

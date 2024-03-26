@@ -15,9 +15,27 @@ func _ready():
 
 #Work in progress function for bringing up a Menu for the player so they can select one of the actions a unit has avalable to them.
 func _input(event):
+	#Unit 1 hotkey
 	if event.is_action_pressed("Unit 1 Actions"):
-		LevelBus.menu_toggle1 = "actions"
+		LevelBus.menu_toggle1 = "actio/ns"
 		var unit_key = "Unit 1"
+		LevelBus.unit_key = unit_key
+		LevelBus.selected_unit = combatants[unit_key]
+		print("in actions mode and selected unit is: " + LevelBus.selected_unit)
+		
+		#Unit 2 hotkey
+	if event.is_action_pressed("Unit 2 Actions"):
+		LevelBus.menu_toggle1 = "actions"
+		var unit_key = "Unit 2"
+		LevelBus.unit_key = unit_key
+		LevelBus.selected_unit = combatants[unit_key]
+		print("in actions mode and selected unit is: " + LevelBus.selected_unit)
+		
+		#Unit 3 hotkey
+	if event.is_action_pressed("Unit 3 Actions"):
+		LevelBus.menu_toggle1 = "actions"
+		var unit_key = "Unit 3"
+		LevelBus.unit_key = unit_key
 		LevelBus.selected_unit = combatants[unit_key]
 		print("in actions mode and selected unit is: " + LevelBus.selected_unit)
 		
