@@ -1,0 +1,100 @@
+[gd_scene load_steps=8 format=3 uid="uid://c4l6pddkqfeep"]
+
+[ext_resource type="Script" path="res://MainMenu.gd" id="1_dewgu"]
+[ext_resource type="Texture2D" uid="uid://bkgjbnv14xflt" path="res://Background Art/Dialogue Backgrounds/title.png" id="2_im8kr"]
+
+[sub_resource type="Theme" id="Theme_yfiuf"]
+default_font_size = 16
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aq075"]
+
+[sub_resource type="Theme" id="Theme_ry26e"]
+default_base_scale = 0.28
+default_font_size = 19
+
+[sub_resource type="SystemFont" id="SystemFont_tknxb"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_yxx7h"]
+font = SubResource("SystemFont_tknxb")
+font_size = 55
+font_color = Color(0.694118, 1, 1, 1)
+outline_size = 4
+outline_color = Color(0.0117647, 0.0117647, 0, 1)
+
+[node name="MainMenu" type="CanvasLayer"]
+script = ExtResource("1_dewgu")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_im8kr")
+expand_mode = 1
+
+[node name="NewGameButton" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -393.0
+offset_top = 168.0
+offset_right = -229.0
+offset_bottom = 228.0
+grow_horizontal = 2
+text = "New Game"
+
+[node name="LoadGameButton" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = 485.0
+offset_top = 162.0
+offset_right = 660.0
+offset_bottom = 218.0
+text = "Load Game"
+
+[node name="QuitButton" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = 799.0
+offset_top = 163.0
+offset_right = 967.0
+offset_bottom = 208.0
+theme_override_constants/outline_size = 2
+text = "Quit To Desktop"
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 0
+offset_left = 357.0
+offset_top = 42.0
+offset_right = 790.0
+offset_bottom = 150.0
+theme = SubResource("Theme_yfiuf")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_aq075")
+
+[node name="Label" type="Label" parent="Control/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ry26e")
+theme_type_variation = &"HeaderLarge"
+theme_override_font_sizes/font_size = 17
+text = "So Im A Hero So What?"
+label_settings = SubResource("LabelSettings_yxx7h")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="Control/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="Control/LoadGameButton" to="." method="_on_load_game_button_pressed"]
+[connection signal="pressed" from="Control/QuitButton" to="." method="_on_quit_button_pressed"]

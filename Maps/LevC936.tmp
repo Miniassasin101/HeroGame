@@ -1,0 +1,47 @@
+[gd_scene load_steps=4 format=3 uid="uid://dj4auo5l5jt6j"]
+
+[ext_resource type="Script" path="res://Maps/Astar.gd" id="1_rk4m3"]
+[ext_resource type="PackedScene" uid="uid://b51byl12ue0c4" path="res://Maps/Level Prototyping/Map/Level Proto.tscn" id="1_ujwfw"]
+[ext_resource type="Script" path="res://Maps/Tilemaps.gd" id="2_vj0bq"]
+
+[node name="Level" type="Node"]
+
+[node name="Services" type="Node" parent="."]
+
+[node name="Navigation Service" type="Node" parent="Services"]
+
+[node name="Node3D" type="Node3D" parent="Services/Navigation Service"]
+script = ExtResource("1_rk4m3")
+
+[node name="Combat Service" type="Node" parent="Services"]
+
+[node name="Environment" type="Node" parent="."]
+
+[node name="Tilemaps" type="Node" parent="Environment"]
+script = ExtResource("2_vj0bq")
+
+[node name="LevelProto" parent="Environment/Tilemaps" groups=["pathable"] instance=ExtResource("1_ujwfw")]
+
+[node name="Objects" type="Node" parent="Environment"]
+
+[node name="Combatants" type="Node" parent="."]
+
+[node name="Player Combatant Group" type="Node" parent="Combatants"]
+
+[node name="Unit A" type="Node" parent="Combatants/Player Combatant Group"]
+
+[node name="Unit B" type="Node" parent="Combatants/Player Combatant Group"]
+
+[node name="Opponent Combatant Group" type="Node" parent="Combatants"]
+
+[node name="Opponent Unit C" type="Node" parent="Combatants/Opponent Combatant Group"]
+
+[node name="Opponent Unit D" type="Node" parent="Combatants/Opponent Combatant Group"]
+
+[node name="UI" type="Node" parent="."]
+
+[node name="Hud" type="Node" parent="UI"]
+
+[node name="Pause Menu" type="Node" parent="UI"]
+
+[node name="Etc" type="Node" parent="UI"]

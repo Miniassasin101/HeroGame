@@ -1,0 +1,13 @@
+~ start
+do emit("fade_out")
+[wait=0.5]
+set current_background = "church"
+do change_background()
+do emit("fade_in")
+
+Narrator: You Open your eyes to find yourself staring up at several women dressed in nurse-like attire,as you are swaddled up in a heap of blankets in a small basket.
+
+- I Stay resolute, a hero Cannot Shed Tears!
+	do emit("dialogue_requested", "intro")
+
+=> END

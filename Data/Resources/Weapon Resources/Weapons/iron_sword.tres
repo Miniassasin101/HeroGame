@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WeaponStatsResource" load_steps=2 format=3 uid="uid://5pxy3yy7bry"]
+
+[ext_resource type="Script" path="res://Data/Resources/Weapon Resources/WeaponStatsResource.gd" id="1_bjxrj"]
+
+[resource]
+script = ExtResource("1_bjxrj")
+name = "Iron Sword"
+rank = "E"
+range = 2
+weight = 2
+might = 4
+hit = 10
+crit = 11
+price = 7
+weapon_group = "Sword"
+traits = {}
+hands = 1

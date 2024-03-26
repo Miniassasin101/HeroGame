@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="UnitStatsResource" load_steps=5 format=3 uid="uid://dogvk8sqioaag"]
+
+[ext_resource type="Script" path="res://Data/Resources/Unit Resources/UnitStatsResource.gd" id="1_g488r"]
+[ext_resource type="Script" path="res://Data/Resources/Action Resources/Action Resource Resources/Attack.gd" id="1_i5a8t"]
+[ext_resource type="Resource" uid="uid://5pxy3yy7bry" path="res://Data/Resources/Weapon Resources/Weapons/iron_sword.tres" id="1_imxup"]
+
+[sub_resource type="Resource" id="Resource_d165v"]
+script = ExtResource("1_i5a8t")
+damage = 10
+name = "Unnamed Action"
+description = "No Description"
+action_cost = 0
+
+[resource]
+script = ExtResource("1_g488r")
+name = "Luna"
+title = null
+level = 5
+internal_level = null
+experience = 5
+current_class = "Fighter"
+hp = null
+mana = null
+build = null
+movement = null
+strength = null
+magic = null
+dexterity = null
+skill = null
+speed = null
+luck = null
+defence = null
+resistance = null
+rating = null
+might = 7
+hit = null
+critical = null
+physical_attack = null
+magic_attack = null
+avoidance = null
+critical_chance = null
+dodge = null
+range = null
+hit_chance = null
+equipped_weapon = ExtResource("1_imxup")
+equipped_items = null
+known_skills = null
+equipped_skills = null
+actions = Array[Resource("res://Data/Resources/Action Resources/ActionResource.gd")]([SubResource("Resource_d165v")])

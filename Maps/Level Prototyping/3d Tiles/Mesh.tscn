@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://it3srvtmxi3w"]
+
+[ext_resource type="PackedScene" uid="uid://l3g52f64m7gd" path="res://Maps/Level Prototyping/3d Tiles/Wassap.glb" id="1_k3rj6"]
+
+[node name="Mesh" type="Node3D"]
+
+[node name="Wassap" parent="." instance=ExtResource("1_k3rj6")]

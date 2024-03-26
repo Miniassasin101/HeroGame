@@ -1,0 +1,200 @@
+[gd_scene load_steps=12 format=3 uid="uid://dj4auo5l5jt6j"]
+
+[ext_resource type="Script" path="res://Maps/Pathfinding.gd" id="1_mi66x"]
+[ext_resource type="Script" path="res://Maps/Level Prototyping/Map/Camera3D.gd" id="2_6rcn4"]
+[ext_resource type="MeshLibrary" uid="uid://cdbd5em8h5241" path="res://Maps/Level Prototyping/3d Tiles/Meshlibraries/meshi.tres" id="3_wir3f"]
+[ext_resource type="Script" path="res://Maps/Player Combatant Group.gd" id="4_4m48r"]
+[ext_resource type="Script" path="res://Maps/Animation Controller.gd" id="4_k34dh"]
+[ext_resource type="Script" path="res://Maps/Unit 1.gd" id="5_ytwgl"]
+[ext_resource type="Script" path="res://Maps/Character Menu.gd" id="6_km7q4"]
+[ext_resource type="Script" path="res://Maps/ActionMenu.gd" id="7_5ql0u"]
+[ext_resource type="Script" path="res://Maps/Action List.gd" id="7_pq5e4"]
+
+[sub_resource type="Environment" id="Environment_j0j4p"]
+ambient_light_source = 3
+ambient_light_color = Color(0.423529, 0.94902, 0.92549, 1)
+ambient_light_sky_contribution = 0.18
+tonemap_mode = 3
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_7vqg8"]
+
+[node name="Level" type="Node"]
+
+[node name="Services" type="Node" parent="."]
+
+[node name="Navigation Service" type="Node" parent="Services"]
+
+[node name="Pathfinding" type="Node" parent="Services/Navigation Service"]
+script = ExtResource("1_mi66x")
+
+[node name="Combat Service" type="Node" parent="Services"]
+
+[node name="Environment" type="Node" parent="."]
+
+[node name="Cameras" type="Node" parent="Environment"]
+
+[node name="Camera3D" type="Camera3D" parent="Environment/Cameras"]
+transform = Transform3D(0.707107, -0.316613, 0.632263, 0, 0.894154, 0.447759, -0.707107, -0.316613, 0.632263, 8.73328, 6.19646, 8.63074)
+projection = 1
+fov = 50.0
+size = 7.0
+script = ExtResource("2_6rcn4")
+
+[node name="Tilemaps" type="Node" parent="Environment"]
+
+[node name="GridMap" type="GridMap" parent="Environment/Tilemaps"]
+mesh_library = ExtResource("3_wir3f")
+cell_size = Vector3(1, 1, 1)
+cell_center_y = false
+data = {
+"cells": PackedInt32Array(458747, 65532, 131072, 524283, 65532, 131072, 589819, 65532, 131072, 655355, 65532, 131072, 720891, 65532, 131072, 786427, 65532, 131072, 851963, 65532, 131072, 917499, 65532, 131072, 983035, 65532, 131072, 0, 0, 2, 0, 1, 2, 0, 2, 2, 0, 3, 2, 0, 4, 2, 0, 5, 2, 0, 6, 2, 0, 7, 2, 0, 8, 2, 0, 9, 2, 0, 10, 2, 1, 0, 2, 1, 1, 2, 1, 2, 2, 1, 3, 2, 1, 4, 2, 1, 5, 2, 1, 6, 2, 1, 7, 2, 1, 8, 2, 1, 9, 2, 1, 10, 2, 2, 0, 2, 2, 1, 2, 2, 2, 2, 2, 3, 2, 2, 4, 2, 2, 5, 2, 2, 6, 2, 2, 7, 2, 2, 8, 2, 2, 9, 2, 2, 10, 2, 3, 0, 2, 3, 1, 2, 3, 2, 2, 3, 3, 2, 3, 4, 2, 3, 5, 2, 3, 6, 2, 3, 7, 2, 3, 8, 2, 3, 9, 2, 3, 10, 2, 4, 0, 2, 4, 1, 2, 4, 2, 2, 4, 3, 2, 4, 4, 2, 4, 5, 2, 4, 6, 2, 4, 7, 2, 4, 8, 2, 4, 9, 2, 4, 10, 2, 5, 0, 2, 5, 1, 2, 5, 2, 2, 5, 3, 2, 5, 4, 2, 5, 5, 2, 5, 6, 2, 5, 7, 2, 5, 8, 2, 5, 9, 2, 5, 10, 2, 6, 0, 2, 6, 1, 2, 6, 2, 2, 6, 3, 2, 6, 4, 2, 6, 5, 2, 6, 6, 2, 6, 7, 2, 6, 8, 2, 6, 9, 2, 6, 10, 2, 7, 0, 2, 7, 1, 2, 7, 2, 2, 7, 3, 2, 7, 4, 2, 7, 5, 2, 7, 6, 2, 7, 7, 2, 7, 8, 2, 7, 9, 2, 7, 10, 2, 8, 0, 2, 8, 1, 2, 8, 2, 2, 8, 3, 2, 8, 4, 2, 8, 5, 2, 8, 6, 2, 8, 7, 2, 8, 8, 2, 8, 9, 2, 8, 10, 2, 9, 0, 2, 9, 1, 2, 9, 2, 2, 9, 3, 2, 9, 4, 2, 9, 5, 2, 9, 6, 2, 9, 7, 2, 9, 8, 2, 9, 9, 2, 9, 10, 2, 10, 0, 2, 10, 1, 2, 10, 2, 2, 10, 3, 2, 10, 4, 2, 10, 5, 2, 10, 6, 2, 10, 7, 2, 10, 8, 2, 10, 9, 2, 10, 10, 2, 65537, 5, 2, 131072, 2, 2, 131073, 5, 2, 196608, 1, 2, -65535, 65533, 2, 65536, 3, 2, 262145, 1, 2, 262146, 1, 2, 262146, 0, 2, 262146, 65535, 2, 262147, 65535, 2, 262147, 0, 2, 262147, 1, 2, 262148, 1, 2, 262148, 0, 2, 262147, 65534, 2, 262148, 65534, 2, 262148, 65535, 2, 262146, 65534, 2, 262145, 65534, 2, 262145, 65535, 2, 262145, 0, 2)
+}
+metadata/_editor_floor_ = Vector3(0, 4, 0)
+
+[node name="Objects" type="Node" parent="Environment"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_j0j4p")
+camera_attributes = SubResource("CameraAttributesPhysical_7vqg8")
+
+[node name="Lighting" type="Node" parent="Environment"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment/Lighting"]
+transform = Transform3D(0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, -0.5, 0.5, -6.97838, 9.70722, 10.6896)
+light_color = Color(1, 1, 0.545098, 1)
+light_angular_distance = 0.5
+shadow_enabled = true
+
+[node name="Combatants" type="Node" parent="."]
+
+[node name="Player Combatant Group" type="Node" parent="Combatants"]
+script = ExtResource("4_4m48r")
+
+[node name="Unit 1" type="Node" parent="Combatants/Player Combatant Group"]
+script = ExtResource("5_ytwgl")
+
+[node name="Art" type="Node" parent="Combatants/Player Combatant Group/Unit 1"]
+
+[node name="Controllers" type="Node" parent="Combatants/Player Combatant Group/Unit 1"]
+
+[node name="AI Controller" type="Node" parent="Combatants/Player Combatant Group/Unit 1/Controllers"]
+
+[node name="Action Controller" type="Node" parent="Combatants/Player Combatant Group/Unit 1/Controllers"]
+
+[node name="Stats Controller" type="Node" parent="Combatants/Player Combatant Group/Unit 1/Controllers"]
+
+[node name="Animation Controller" type="Node" parent="Combatants/Player Combatant Group/Unit 1/Controllers"]
+script = ExtResource("4_k34dh")
+
+[node name="Action Overrides" type="Node" parent="Combatants/Player Combatant Group/Unit 1"]
+
+[node name="Movement Override" type="Node" parent="Combatants/Player Combatant Group/Unit 1/Action Overrides"]
+
+[node name="Unit 2" type="Node" parent="Combatants/Player Combatant Group"]
+script = ExtResource("5_ytwgl")
+
+[node name="Art" type="Node" parent="Combatants/Player Combatant Group/Unit 2"]
+
+[node name="Controllers" type="Node" parent="Combatants/Player Combatant Group/Unit 2"]
+
+[node name="AI Controller" type="Node" parent="Combatants/Player Combatant Group/Unit 2/Controllers"]
+
+[node name="Action Controller" type="Node" parent="Combatants/Player Combatant Group/Unit 2/Controllers"]
+
+[node name="Stats Controller" type="Node" parent="Combatants/Player Combatant Group/Unit 2/Controllers"]
+
+[node name="Animation Controller" type="Node" parent="Combatants/Player Combatant Group/Unit 2/Controllers"]
+script = ExtResource("4_k34dh")
+
+[node name="Action Overrides" type="Node" parent="Combatants/Player Combatant Group/Unit 2"]
+
+[node name="Movement Override" type="Node" parent="Combatants/Player Combatant Group/Unit 2/Action Overrides"]
+
+[node name="Unit 3" type="Node" parent="Combatants/Player Combatant Group"]
+script = ExtResource("5_ytwgl")
+
+[node name="Art" type="Node" parent="Combatants/Player Combatant Group/Unit 3"]
+
+[node name="Controllers" type="Node" parent="Combatants/Player Combatant Group/Unit 3"]
+
+[node name="AI Controller" type="Node" parent="Combatants/Player Combatant Group/Unit 3/Controllers"]
+
+[node name="Action Controller" type="Node" parent="Combatants/Player Combatant Group/Unit 3/Controllers"]
+
+[node name="Stats Controller" type="Node" parent="Combatants/Player Combatant Group/Unit 3/Controllers"]
+
+[node name="Animation Controller" type="Node" parent="Combatants/Player Combatant Group/Unit 3/Controllers"]
+script = ExtResource("4_k34dh")
+
+[node name="Action Overrides" type="Node" parent="Combatants/Player Combatant Group/Unit 3"]
+
+[node name="Movement Override" type="Node" parent="Combatants/Player Combatant Group/Unit 3/Action Overrides"]
+
+[node name="Opponent Combatant Group" type="Node" parent="Combatants"]
+
+[node name="Opponent Unit C" type="Node" parent="Combatants/Opponent Combatant Group"]
+
+[node name="Art" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C"]
+
+[node name="Controllers" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C"]
+
+[node name="AI Controller" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C/Controllers"]
+
+[node name="Action Controller" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C/Controllers"]
+
+[node name="Stats Controller" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C/Controllers"]
+
+[node name="Animation Controller" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C/Controllers"]
+
+[node name="Action Overrides" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C"]
+
+[node name="Movement Override" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C/Action Overrides"]
+
+[node name="UI" type="Node" parent="."]
+
+[node name="Hud" type="Node" parent="UI"]
+
+[node name="Pause Menu" type="Node" parent="UI"]
+
+[node name="Action List" type="Node" parent="UI"]
+script = ExtResource("7_pq5e4")
+
+[node name="Control" type="Control" parent="UI/Action List"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/Action List/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.388
+anchor_top = 0.051
+anchor_right = 0.65
+anchor_bottom = 0.051
+offset_left = -19.976
+offset_top = -0.0480003
+offset_right = 20.2
+offset_bottom = 93.952
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Action List/Control/PanelContainer"]
+layout_mode = 2
+
+[node name="MoveButton" type="Button" parent="UI/Action List/Control/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Move"
+
+[node name="MenuBar" type="MenuBar" parent="UI/Action List/Control/PanelContainer/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("7_5ql0u")
+
+[node name="Character Menu" type="Node" parent="UI"]
+script = ExtResource("6_km7q4")
+
+[node name="PopupMenu" type="PopupMenu" parent="UI/Character Menu"]
+visible = true
+
+[connection signal="pressed" from="UI/Action List/Control/PanelContainer/VBoxContainer/MoveButton" to="UI/Action List" method="_on_move_button_pressed"]

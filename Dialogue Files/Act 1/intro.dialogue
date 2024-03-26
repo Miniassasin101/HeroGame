@@ -1,0 +1,88 @@
+~ start
+
+
+set current_background = "heaven"
+[wait=1]
+
+do change_background()
+do emit("fade_in")
+
+CharacterThoughts: soft light fills the area, giving the atmosphere a solemn feel.
+	Is this a dream?
+
+Ilias: [speed=.2][wave amp=50.0 freq=5.0 connected=1]Hero...
+Ilias: [speed=.2][wave amp=50.0 freq=5.0 connected=1]Oh brave [wait=1.5]Hero...
+
+CharacterThoughts: You hear a beautiful voice begin to call out to you.
+
+CharacterThoughts: An angelic being you somehow know of as "Ilias" the of this world suddenly appears before you.
+
+Ilias: Many many years ago, in a time man cannot comprehend, I created this world.
+Ilias: First was the Earth, sky, and sea.
+	Then the animals, birds, and insects.
+Ilias: Finally, I created Humanity.
+Ilias: However, I am not perfect.
+	While creating Humanity, I also had many failures...
+Ilias: Those failures are Demons... a truly detestable existence.
+
+~ dialogue_choices
+- Lost Soul: Am I... dead?
+	Ilias: In a manner of speaking, yes.
+		But your soul has been brought here for a purpose far greater than any single life.
+	- Purpose? What purpose?
+		Ilias: To be the light in the darkness, Hero. The world is under siege by forces malevolent and powerful. You are to be reborn, a champion of light and goodness.
+		- Reborn? How?
+			Ilias: Through my power, you will be given a new form. One capable of withstanding the darkness that threatens to engulf the world.
+			- And if I refuse?
+				Ilias: The choice is yours, of course. But know this, refusing means returning to the void, to exist without purpose or end. The world's fate would then be sealed.
+				- I need to think about this.
+					Ilias: Take the time you need, but remember, time is a luxury our world does not have.
+					=> dialogue_choices
+				- I understand. I will accept.
+					Ilias: Your bravery is commendable, Hero. Together, we will face the darkness.
+					=> dialogue_choices
+
+- But why me?
+	Ilias: Your heart, pure and valiant, has been chosen. Chosen to rise as the beacon in these tumultuous times.
+	- My heart? But I don't remember...
+		Ilias: Memories are but echoes of a past life. What matters now is the essence of your spirit, and the unwavering courage it possesses.
+		- I'm not sure I can live up to that.
+			Ilias: Doubt is natural, Hero. But I have seen the light within you. It is brighter than you know.
+			=> dialogue_choices
+		- I will try my best.
+			Ilias: That is all I ask. Your best will illuminate the darkest of paths.
+			=> dialogue_choices
+
+- How am I even supposed to do this?
+	Ilias: I shall guide you, protect you, and watch over you as you walk the path laid out before you.
+	- What path is that?
+		Ilias: A path of heroism and righteousness. You will journey across lands, gather allies, and confront the evils that seek to destroy all that is good.
+		- And if I falter?
+			Ilias: Fear not, for I will be with you every step of the way. Your light will grow, as will your strength, to face any challenge.
+			- What if the challenge is too great?
+				Ilias: No challenge is too great for a heart as brave as yours. Remember, you are not alone.
+				=> dialogue_choices
+			- How do I start?
+				Ilias: Begin at the church. It is there you will find your first ally, and the journey will become clearer.
+				=> dialogue_choices
+
+- Any advice?
+	Ilias: Be wary, Hero. The truth of this world is complex, filled with shades of grey. Not everything is as it seems.
+	- What do you mean?
+		Ilias: In your quest, you will uncover secrets and face truths that may shake the very foundation of your beliefs. Be strong, but keep an open mind.
+		- Can I really change the world?
+			Ilias: Absolutely. Your actions, your choices, will shape the future. Believe in yourself, as I believe in you.
+			- It's a lot of pressure.
+				Ilias: Great destinies are often born from great challenges. You have the strength to rise above.
+				=> dialogue_choices
+			- I'll do what I can.
+				Ilias: And that is all we can ask for. Your journey will be one of discovery, not just of the world, but of yourself.
+				=> dialogue_choices
+
+- I'm ready.
+	Ilias: Now, step forth into the light, Hero. Begin your journey to the church, where your path to salvation begins.
+	- I will do my best.
+		Ilias: I have faith in you, brave Hero. May your heart be your guiding light, and may the darkness fear your unwavering spirit.
+		do emit("dialogue_requested", "merman")
+		=> END
+

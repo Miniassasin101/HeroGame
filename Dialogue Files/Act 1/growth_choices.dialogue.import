@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_11"
+type="Resource"
+uid="uid://dned7lp1ou6tc"
+path="res://.godot/imported/growth_choices.dialogue-e67d1eb9c18cbdd16a03724ddb7e1ee4.tres"
+
+[deps]
+
+source_file="res://Dialogue Files/Act 1/growth_choices.dialogue"
+dest_files=["res://.godot/imported/growth_choices.dialogue-e67d1eb9c18cbdd16a03724ddb7e1ee4.tres"]
+
+[params]
+
+defaults=true

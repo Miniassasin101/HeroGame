@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://big6jsgsuvylk"]
+
+[ext_resource type="Script" path="res://Maps/Level Prototyping/Map/Pathfinding proto.gd" id="1_0rq3c"]
+[ext_resource type="Script" path="res://Maps/Level Prototyping/Map/Camera3D.gd" id="3_0q8pt"]
+[ext_resource type="Texture2D" uid="uid://bjkefiiuwebg7" path="res://Maps/Level Prototyping/sprites/Sol.png" id="3_o82bv"]
+[ext_resource type="MeshLibrary" uid="uid://cdbd5em8h5241" path="res://Maps/Level Prototyping/3d Tiles/Meshlibraries/meshi.tres" id="3_uvgm3"]
+[ext_resource type="Script" path="res://Maps/Level Prototyping/Map/Node.gd" id="5_3ouup"]
+[ext_resource type="Texture2D" uid="uid://cq1ie0hulvlj1" path="res://Maps/Level Prototyping/sprites/Nox.png" id="6_d4pja"]
+
+[node name="LevelProto" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.283404, 1.527, -0.475556)
+script = ExtResource("1_0rq3c")
+
+[node name="Player" type="Node3D" parent="."]
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = ExtResource("3_uvgm3")
+cell_size = Vector3(1, 1, 1)
+cell_center_y = false
+data = {
+"cells": PackedInt32Array(458747, 65532, 131072, 524283, 65532, 131072, 589819, 65532, 131072, 655355, 65532, 131072, 720891, 65532, 131072, 786427, 65532, 131072, 851963, 65532, 131072, 917499, 65532, 131072, 983035, 65532, 131072, 0, 0, 2, 0, 1, 2, 0, 2, 2, 0, 3, 2, 0, 4, 2, 0, 5, 2, 0, 6, 2, 0, 7, 2, 0, 8, 2, 0, 9, 2, 0, 10, 2, 1, 0, 2, 1, 1, 2, 1, 2, 2, 1, 3, 2, 1, 4, 2, 1, 5, 2, 1, 6, 2, 1, 7, 2, 1, 8, 2, 1, 9, 2, 1, 10, 2, 2, 0, 2, 2, 1, 2, 2, 2, 2, 2, 3, 2, 2, 4, 2, 2, 5, 2, 2, 6, 2, 2, 7, 2, 2, 8, 2, 2, 9, 2, 2, 10, 2, 3, 0, 2, 3, 1, 2, 3, 2, 2, 3, 3, 2, 3, 4, 2, 3, 5, 2, 3, 6, 2, 3, 7, 2, 3, 8, 2, 3, 9, 2, 3, 10, 2, 4, 0, 2, 4, 1, 2, 4, 2, 2, 4, 3, 2, 4, 4, 2, 4, 5, 2, 4, 6, 2, 4, 7, 2, 4, 8, 2, 4, 9, 2, 4, 10, 2, 5, 0, 2, 5, 1, 2, 5, 2, 2, 5, 3, 2, 5, 4, 2, 5, 5, 2, 5, 6, 2, 5, 7, 2, 5, 8, 2, 5, 9, 2, 5, 10, 2, 6, 0, 2, 6, 1, 2, 6, 2, 2, 6, 3, 2, 6, 4, 2, 6, 5, 2, 6, 6, 2, 6, 7, 2, 6, 8, 2, 6, 9, 2, 6, 10, 2, 7, 0, 2, 7, 1, 2, 7, 2, 2, 7, 3, 2, 7, 4, 2, 7, 5, 2, 7, 6, 2, 7, 7, 2, 7, 8, 2, 7, 9, 2, 7, 10, 2, 8, 0, 2, 8, 1, 2, 8, 2, 2, 8, 3, 2, 8, 4, 2, 8, 5, 2, 8, 6, 2, 8, 7, 2, 8, 8, 2, 8, 9, 2, 8, 10, 2, 9, 0, 2, 9, 1, 2, 9, 2, 2, 9, 3, 2, 9, 4, 2, 9, 5, 2, 9, 6, 2, 9, 7, 2, 9, 8, 2, 9, 9, 2, 9, 10, 2, 10, 0, 2, 10, 1, 2, 10, 2, 2, 10, 3, 2, 10, 4, 2, 10, 5, 2, 10, 6, 2, 10, 7, 2, 10, 8, 2, 10, 9, 2, 10, 10, 2, 65537, 5, 2, 131072, 2, 2, 131073, 5, 2, 196608, 1, 2, -65535, 65533, 2, 65536, 3, 2, 262145, 1, 2, 262146, 1, 2, 262146, 0, 2, 262146, 65535, 2, 262147, 65535, 2, 262147, 0, 2, 262147, 1, 2, 262148, 1, 2, 262148, 0, 2, 262147, 65534, 2, 262148, 65534, 2, 262148, 65535, 2, 262146, 65534, 2, 262145, 65534, 2, 262145, 65535, 2, 262145, 0, 2)
+}
+metadata/_editor_floor_ = Vector3(0, 4, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -5.28418, 2.91246, 2.93152)
+sky_mode = 1
+
+[node name="Node" type="Node" parent="."]
+script = ExtResource("5_3ouup")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1.54459, 0, 0, 0, 1.54459, 0, 0, 0, 1.54459, 4, 1, 4)
+billboard = 1
+texture = ExtResource("3_o82bv")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.707107, -0.316613, 0.632263, 0, 0.894154, 0.447759, -0.707107, -0.316613, 0.632263, 8.73328, 6.19646, 8.63074)
+projection = 1
+fov = 50.0
+size = 7.0
+script = ExtResource("3_0q8pt")
+
+[node name="Enemy" type="Sprite3D" parent="."]
+transform = Transform3D(1.47688, 0, 0, 0, 1.47688, 0, 0, 0, 1.47688, 5, 1, 4)
+billboard = 1
+texture = ExtResource("6_d4pja")

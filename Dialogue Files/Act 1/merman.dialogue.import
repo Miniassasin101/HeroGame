@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_11"
+type="Resource"
+uid="uid://cmomw8l0to1ve"
+path="res://.godot/imported/merman.dialogue-fd888997d1b435670a9039ed8dc833fc.tres"
+
+[deps]
+
+source_file="res://Dialogue Files/Act 1/merman.dialogue"
+dest_files=["res://.godot/imported/merman.dialogue-fd888997d1b435670a9039ed8dc833fc.tres"]
+
+[params]
+
+defaults=true

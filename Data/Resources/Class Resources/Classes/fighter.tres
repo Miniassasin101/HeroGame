@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="ClassResource" load_steps=2 format=3 uid="uid://2alr2hbx7hpq"]
+
+[ext_resource type="Script" path="res://Data/Resources/Class Resources/ClassResource.gd" id="1_ut17b"]
+
+[resource]
+script = ExtResource("1_ut17b")
+_class_name = ""
+movement_type = 0
+base_MOV = 5
+growth_rate_bonus = {
+"Attack": 0.0,
+"Defense": 0.0,
+"HP": 0.0,
+"Luck": 0.0,
+"Magic": 0.0,
+"Resistance": 0.0,
+"Skill": 0.0,
+"Speed": 0.0
+}
+bonus_stats = {
+"Attack": 2,
+"Defense": 2,
+"HP": 2,
+"Luck": 4,
+"Resistance": 1,
+"Skill": -2,
+"Speed": 2
+}

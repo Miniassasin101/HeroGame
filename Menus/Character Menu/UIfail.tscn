@@ -1,0 +1,109 @@
+[gd_scene load_steps=2 format=3 uid="uid://byggcps844s0l"]
+
+[sub_resource type="GDScript" id="GDScript_t0llr"]
+script/source = "# UIOverlay.gd
+extends Control
+
+@onready var character_list_container: VBoxContainer = $CharacterListPanel/ScrollContainer/VBoxContainer
+@onready var character_sheet_panel: Panel = $CharacterSheetPanel
+
+# Assume you have a global script or singleton managing your character roster
+# For this example, let's say it's a dictionary with character names as keys and UnitStatsResource instances as values
+var character_roster = {} # This would actually be populated from your game's character management system
+
+func _ready():
+	character_sheet_panel.hide() # Ensure the character sheet is hidden initially
+	UnitBus.roster_updated.connect(self.populate_character_list)
+	
+
+func populate_character_list():
+	print(\"Populate character List\")
+	for character_name in character_roster.keys():
+		var button = Button.new()
+		button.text = character_name
+		button.connect.bind(\"pressed\", self, \"_on_character_selected\", [character_name])
+		character_list_container.add_child(button)
+
+func _on_character_selected(character_name):
+	var character = character_roster[character_name]
+	# Update character sheet info
+	$CharacterSheetPanel/NameLabel.text = \"Name: \" + character.name
+	$CharacterSheetPanel/LevelLabel.text = \"Level: \" + str(character.level)
+	# Add more updates for other stats, skills, and items...
+	
+	character_sheet_panel.show()
+
+# Optional: Close or hide the character sheet panel
+func _hide_character_sheet():
+	character_sheet_panel.hide()
+"
+
+[node name="UiOverlay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_t0llr")
+
+[node name="CharacterListPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.757
+anchor_top = 0.376
+anchor_right = 0.757
+anchor_bottom = 0.376
+offset_left = -0.0640259
+offset_top = 0.352005
+offset_right = 243.936
+offset_bottom = 327.352
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CharacterListPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CharacterListPanel/ScrollContainer"]
+layout_mode = 2
+
+[node name="CharacterSheetPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.471
+anchor_top = 0.5
+anchor_right = 0.529
+anchor_bottom = 0.56
+offset_left = -411.592
+offset_top = -293.0
+offset_right = -411.408
+offset_bottom = -174.88
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2.16315, 3.77939)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CharacterSheetPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NameLabel" type="Label" parent="CharacterSheetPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="LevelLabel" type="Label" parent="CharacterSheetPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="StatsLabel" type="Label" parent="CharacterSheetPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="SkillsList" type="Label" parent="CharacterSheetPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="ItemsList" type="Label" parent="CharacterSheetPanel/VBoxContainer"]
+layout_mode = 2

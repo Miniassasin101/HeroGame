@@ -1,0 +1,43 @@
+~ start
+
+Fisherman: Hey! I've been noticing my nets are lighter these days. You wouldn't happen to know anything about that, would you?
+
+Mermaid: Oh, I might have borrowed a fish... or a dozen. They looked so trapped and sad in those nets.
+
+- I need those fish to make a living! Can't you find your food elsewhere?
+	Mermaid: I understand your concern, but the sea is not what it used to be. It's harder for us to find food too.
+	- Maybe there's a way we can help each other.
+		Mermaid: That's a thoughtful proposal. What did you have in mind?
+		- What if you guide the fish into my nets in exchange for part of the catch?
+			Mermaid: That sounds fair. It ensures food for both of us.
+			=> END
+		- How about you stop taking fish from my nets, and I'll help clean the sea to make it easier for you to find food?
+			Mermaid: A cleaner sea means more fish for everyone. It's a deal!
+			=> END
+	- How am I supposed to live like this? You need to stop.
+		Mermaid: I didn't realize the impact of my actions. I'll find another way.
+		- Thank you for understanding.
+			Mermaid: I hope we can live in harmony from now on.
+			=> END
+		- I'll believe it when I see it.
+			Mermaid: I'll prove it to you. Give me a chance.
+			=> END
+
+- How can you be so selfish? The sea is vast!
+	Mermaid: The sea might be vast, but not all of it is kind to creatures like me.
+	- Then let's work on making the sea a better place for both of us.
+		Mermaid: Your heart is as vast as the sea itself. I'd be honored to work alongside you.
+		- Let's start by tackling the pollution problem.
+			Mermaid: Together, we can make a significant difference.
+			=> END
+		- We need to create safe zones for all sea creatures.
+			Mermaid: Safe zones would ensure peace and abundance for us all.
+			=> END
+	- You're just making excuses. Find another way to feed yourself.
+		Mermaid: I see your point. It's unfair for me to burden you with my problems.
+		- I appreciate your understanding.
+			Mermaid: Let's hope for a brighter future for both of us.
+			=> END
+		- Actions speak louder than words.
+			Mermaid: I'll show you my good intentions through my actions.
+			=> END
