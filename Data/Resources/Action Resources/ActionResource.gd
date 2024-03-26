@@ -1,4 +1,5 @@
 # ActionResource.gd
+#Class for creating actions that can be modularly attatched to a unit.
 extends Resource
 class_name ActionResource
 

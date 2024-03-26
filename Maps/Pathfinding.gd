@@ -38,11 +38,17 @@ func _movement_var_collecter(mpos):
 	var adjspritepos = spritepos + Vector3(0, -1, 0)
 	print("ASP: ")
 	print(adjspritepos)
-	find_path_and_move_sprite(adjspritepos, mpos)
+	if mpos == null:
+		print ("Null Mouse Position")
+		
+		emit_signal("move_button")
+	else:
+		find_path_and_move_sprite(adjspritepos, mpos)
 
 func find_path_and_move_sprite(start_pos: Vector3, end_pos: Vector3):
 	#print(start_pos)
 	#print(end_pos)
+	LevelBus.menu_toggle1 = "wait"
 	var start_id = vector3i_to_id(grid_map.local_to_map(start_pos))
 	var end_id = vector3i_to_id(grid_map.local_to_map(end_pos))
 	var path = astar.get_point_path(start_id, end_id)
@@ -59,23 +65,22 @@ func move_sprite_along_path(path: PackedVector3Array):
 	var movechar = get_node("../../../Combatants/Player Combatant Group/Unit 1/Controllers/Animation Controller/" + LevelBus.selected_unit)
 	var duration_per_segment = 0.3 # Adjust based on how fast you want the sprite to move
 	for i in range(path.size() - 1):
-		#var from_position = sprite_3d.position.origin if i == 0 else path[i]
-		#print("fromposcheck")
-		#print(from_position)
 		var to_position = path[i + 1]
 		print("To Position:")
 		print(to_position)
 		var actualmov = to_position + Vector3(.25, 1, .25)
 		print("Actual Move:")
 		print(actualmov)
-		#await get_tree().create_timer(1.0).timeout
+		var updatepos = to_position + Vector3(0, 1, 0)
+		WorldState.update_unit_position(LevelBus.selected_unit, updatepos)
 		tween.tween_property(movechar, "position", Vector3(actualmov), duration_per_segment).set_trans(0).set_ease(2)
 		if i < path.size() - 2: # Chain all but the last segment
-			
-			#print("working")
 			tween = tween.chain()
 	tween.play()
+	
 
+
+	
 
 
 func _on_tween_completed(tween, key):
