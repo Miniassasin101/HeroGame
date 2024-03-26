@@ -18,7 +18,7 @@ func _input(event):
 		if event.is_action_pressed("move"):
 			var adjusted_positition = shoot_ray()
 			LevelBus.mousesave(adjusted_positition)
-			LevelBus.menu_toggle1 = "wait"
+			
 	else:
 		pass
 
@@ -47,8 +47,11 @@ func shoot_ray():
 		print("Calculation Test:")
 		print (adjpos)
 		print("Calc Test Success")
+		
+		
 		return adjpos
 		#Call the function in the parent script with the clicked world position
+
 
 #adjusting/rounding function
 func round_to_nearest_half(value):
