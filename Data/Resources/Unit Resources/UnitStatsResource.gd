@@ -33,7 +33,7 @@ signal experience_gained(character_name)
 @export var avoidance: int = 21
 @export var critical_chance: int = 2
 @export var dodge: int = 21
-@export var range: int = 0
+@export var range: int = 1
 @export var hit_chance: int = 34
 @export_group("")
 @export var equipped_weapon: WeaponStatsResource
@@ -144,10 +144,12 @@ func calculate_current_stats():
 	calculate_range()
 
 func _init():
-	calculate_current_stats()  # Initial calculation
+	calculate_current_stats()
+	  # Initial calculation
 func apply_modifiers():
 # This function applies modifiers and recalculates stats
 	calculate_current_stats()
+	
 
 # Other Updates (assuming they are needed to be called outside)
 func update_health(current: int, max: int):
@@ -161,6 +163,7 @@ func update_build(new_build: int):
 	apply_modifiers()  # Recalculate since build affects other stats
 
 func update_derived_stats():
+	print("Derived stat updating")
 	physical_attack = calculate_physical_attack()
 	magic_attack = calculate_magic_attack()
 	rating = calculate_rating()
@@ -170,3 +173,5 @@ func update_derived_stats():
 	dodge = calculate_dodge()
 	range = calculate_range()
 	critical = calculate_crit()
+	print("Printing Range")
+	print(range)

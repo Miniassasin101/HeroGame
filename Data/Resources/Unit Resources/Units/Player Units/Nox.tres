@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="UnitStatsResource" load_steps=3 format=3 uid="uid://om82jijk12i1"]
 
-[ext_resource type="Resource" uid="uid://5pxy3yy7bry" path="res://Data/Resources/Weapon Resources/Weapons/iron_sword.tres" id="1_j8rbs"]
+[ext_resource type="Resource" uid="uid://defufkdgtlicq" path="res://Data/Resources/Weapon Resources/Weapons/iron_axe.tres" id="1_2r3b2"]
 [ext_resource type="Script" path="res://Data/Resources/Unit Resources/UnitStatsResource.gd" id="1_soawq"]
 
 [resource]
@@ -33,9 +33,9 @@ magic_attack = 25
 avoidance = 21
 critical_chance = 2
 dodge = 21
-range = 0
+range = 1
 hit_chance = 34
-equipped_weapon = ExtResource("1_j8rbs")
+equipped_weapon = ExtResource("1_2r3b2")
 equipped_items = Array[String]([])
 known_skills = Array[String]([])
 equipped_skills = Array[String]([])

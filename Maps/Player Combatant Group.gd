@@ -17,7 +17,7 @@ func _ready():
 func _input(event):
 	#Unit 1 hotkey
 	if event.is_action_pressed("Unit 1 Actions"):
-		LevelBus.menu_toggle1 = "actio/ns"
+		LevelBus.menu_toggle1 = "actions"
 		var unit_key = "Unit 1"
 		LevelBus.unit_key = unit_key
 		LevelBus.selected_unit = combatants[unit_key]

@@ -10,14 +10,20 @@ signal target_selected(target_name)
 signal attack_executed(attacker_name, target_name, damage)
 signal combat_ended(winner)
 
-func _init():
-	pass # Initialization code here, if needed
+func _ready():
+	LevelBus.connect("attack_button", Callable(self, "_target_selection"))
 
 # Function to select a target based on your criteria (e.g., closest enemy, lowest health)
-func select_target(attacker_position: Vector3, is_enemy: bool) -> String:
+func _target_selection():
+	print("Target Selection Working")
+	var range = find_attack_range()
+	print(range)
 	# Implement target selection logic here
 	# Placeholder: return an example target name
-	return "TargetName"
+
+func find_attack_range():
+	UnitBus.character_roster[LevelBus.selected_unit].update_derived_stats()
+	return(UnitBus.character_roster[LevelBus.selected_unit].range)
 
 # Function to calculate attack damage based on attacker and target stats, positions, etc.
 func calculate_attack_damage(attacker_name: String, target_name: String) -> int:
