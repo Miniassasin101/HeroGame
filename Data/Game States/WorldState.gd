@@ -12,16 +12,30 @@ signal position_updated(is_enemy, unit_id, new_position)
 var current_turn = "player" # "player" or "enemy"
 var player_positions := {}
 var enemy_positions := {}
+var enemy_roster := {}
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
+func add_enemy_to_roster(name: String):
+	var path = "res://Data/Resources/Unit Resources/Units/Enemy Units/" + name + ".tres"
+	var enemy_resource: UnitStatsResource = load(path)
+	if enemy_resource:
+		enemy_roster[name] = enemy_resource
+		#emit_signal("character_updated", name)
+		#emit_signal("roster_updated")
+	else:
+		push_error("Failed to load character: %s" % path)
+
+
 func _input(event):
 	if event.is_action_pressed("Test T"):
-		print("T- Selected Unit Registration for player positions")
-		print(player_positions[LevelBus.selected_unit])
+		print("T- Selected Unit Registration for enemy positions")
+		print(enemy_roster["Dio"])
+		print(enemy_roster["Dio"].name)
+		print(UnitBus.character_roster["Sol"].name)
 
 # Method to update the position of a unit
 func update_unit_position(unit_name: String, new_position: Vector3, is_enemy: bool = false):
@@ -30,6 +44,7 @@ func update_unit_position(unit_name: String, new_position: Vector3, is_enemy: bo
 	# Update the appropriate dictionary based on whether the unit is an enemy
 	if is_enemy:
 		enemy_positions[unit_name] = adjusted_position
+		add_enemy_to_roster(unit_name)
 	else:
 		player_positions[unit_name] = adjusted_position
 # Emit a signal indicating a position update

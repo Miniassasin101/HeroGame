@@ -14,6 +14,8 @@ signal roster_updated()
 signal character_experience_updated(character_name)
 signal PCName(name)
 
+
+
 func _ready():
 	initialize_characters()
 	notify_listeners()
@@ -24,6 +26,9 @@ func initialize_characters():
 	add_character_by_name("Luna")
 
 	emit_signal("roster_updated")
+
+
+
 func notify_listeners():
 	for character_name in character_roster.keys():
 		var character_resource = character_roster[character_name]

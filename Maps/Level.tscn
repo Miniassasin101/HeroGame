@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dj4auo5l5jt6j"]
+[gd_scene load_steps=15 format=3 uid="uid://dj4auo5l5jt6j"]
 
 [ext_resource type="Script" path="res://Maps/Pathfinding.gd" id="1_mi66x"]
 [ext_resource type="Script" path="res://Maps/Level Prototyping/Map/Camera3D.gd" id="2_6rcn4"]
@@ -8,8 +8,10 @@
 [ext_resource type="Script" path="res://Maps/Animation Controller.gd" id="4_k34dh"]
 [ext_resource type="Script" path="res://Maps/Unit 1.gd" id="5_ytwgl"]
 [ext_resource type="Script" path="res://Maps/Character Menu.gd" id="6_km7q4"]
-[ext_resource type="Script" path="res://Maps/ActionMenu.gd" id="7_5ql0u"]
 [ext_resource type="Script" path="res://Maps/Action List.gd" id="7_pq5e4"]
+[ext_resource type="Script" path="res://Maps/Enemy Animation Controller.gd" id="8_o3i0j"]
+[ext_resource type="Texture2D" uid="uid://b8aprihdkm6p7" path="res://Background Art/Character Sprites (Dialogue)/sicon 64 mov.png" id="10_2utg3"]
+[ext_resource type="Texture2D" uid="uid://bsfo5e1ll07s7" path="res://Background Art/Character Sprites (Dialogue)/sicon 64.png" id="11_55ual"]
 
 [sub_resource type="Environment" id="Environment_j0j4p"]
 ambient_light_source = 3
@@ -134,23 +136,24 @@ script = ExtResource("4_k34dh")
 
 [node name="Opponent Combatant Group" type="Node" parent="Combatants"]
 
-[node name="Opponent Unit C" type="Node" parent="Combatants/Opponent Combatant Group"]
+[node name="Enemy C" type="Node" parent="Combatants/Opponent Combatant Group"]
 
-[node name="Art" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C"]
+[node name="Art" type="Node" parent="Combatants/Opponent Combatant Group/Enemy C"]
 
-[node name="Controllers" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C"]
+[node name="Controllers" type="Node" parent="Combatants/Opponent Combatant Group/Enemy C"]
 
-[node name="AI Controller" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C/Controllers"]
+[node name="AI Controller" type="Node" parent="Combatants/Opponent Combatant Group/Enemy C/Controllers"]
 
-[node name="Action Controller" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C/Controllers"]
+[node name="Action Controller" type="Node" parent="Combatants/Opponent Combatant Group/Enemy C/Controllers"]
 
-[node name="Stats Controller" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C/Controllers"]
+[node name="Stats Controller" type="Node" parent="Combatants/Opponent Combatant Group/Enemy C/Controllers"]
 
-[node name="Animation Controller" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C/Controllers"]
+[node name="Animation Controller" type="Node" parent="Combatants/Opponent Combatant Group/Enemy C/Controllers"]
+script = ExtResource("8_o3i0j")
 
-[node name="Action Overrides" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C"]
+[node name="Action Overrides" type="Node" parent="Combatants/Opponent Combatant Group/Enemy C"]
 
-[node name="Movement Override" type="Node" parent="Combatants/Opponent Combatant Group/Opponent Unit C/Action Overrides"]
+[node name="Movement Override" type="Node" parent="Combatants/Opponent Combatant Group/Enemy C/Action Overrides"]
 
 [node name="UI" type="Node" parent="."]
 
@@ -172,14 +175,14 @@ grow_vertical = 2
 [node name="PanelContainer" type="PanelContainer" parent="UI/Action List/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.388
+anchor_left = 0.371
 anchor_top = 0.051
-anchor_right = 0.65
-anchor_bottom = 0.051
-offset_left = -19.976
+anchor_right = 0.484
+anchor_bottom = 0.196
+offset_left = -0.392029
 offset_top = -0.0480003
-offset_right = 20.2
-offset_bottom = 93.952
+offset_right = -0.568054
+offset_bottom = -0.00800323
 grow_horizontal = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/Action List/Control/PanelContainer"]
@@ -188,10 +191,14 @@ layout_mode = 2
 [node name="MoveButton" type="Button" parent="UI/Action List/Control/PanelContainer/VBoxContainer"]
 layout_mode = 2
 text = "Move"
+icon = ExtResource("10_2utg3")
+expand_icon = true
 
-[node name="MenuBar" type="MenuBar" parent="UI/Action List/Control/PanelContainer/VBoxContainer"]
+[node name="AttackButton" type="Button" parent="UI/Action List/Control/PanelContainer/VBoxContainer"]
 layout_mode = 2
-script = ExtResource("7_5ql0u")
+text = "Attack"
+icon = ExtResource("11_55ual")
+expand_icon = true
 
 [node name="Character Menu" type="Node" parent="UI"]
 script = ExtResource("6_km7q4")
@@ -200,3 +207,4 @@ script = ExtResource("6_km7q4")
 visible = true
 
 [connection signal="pressed" from="UI/Action List/Control/PanelContainer/VBoxContainer/MoveButton" to="UI/Action List" method="_on_move_button_pressed"]
+[connection signal="pressed" from="UI/Action List/Control/PanelContainer/VBoxContainer/AttackButton" to="UI/Action List" method="_on_attack_button_pressed"]

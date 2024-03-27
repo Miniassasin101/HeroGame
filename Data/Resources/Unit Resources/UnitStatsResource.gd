@@ -10,6 +10,7 @@ signal experience_gained(character_name)
 @export var current_class: String
 
 #Base Stats
+@export_group("Base_Stats")
 @export var hp: int = 15
 @export var mana: int = 5
 @export var build: int = 3
@@ -22,6 +23,7 @@ signal experience_gained(character_name)
 @export var luck: int = 5
 @export var defence: int = 5
 @export var resistance: int = 5
+@export_subgroup("Derived_Stats")
 @export var rating: int = 0
 @export var might: int = 13
 @export var hit: int = 21
@@ -33,6 +35,7 @@ signal experience_gained(character_name)
 @export var dodge: int = 21
 @export var range: int = 0
 @export var hit_chance: int = 34
+@export_group("")
 @export var equipped_weapon: WeaponStatsResource
 @export var equipped_items: Array[String]
 @export var known_skills: Array[String]

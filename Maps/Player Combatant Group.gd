@@ -38,8 +38,7 @@ func _input(event):
 		LevelBus.unit_key = unit_key
 		LevelBus.selected_unit = combatants[unit_key]
 		print("in actions mode and selected unit is: " + LevelBus.selected_unit)
-		
-		
+
 
 # Function to add a combatant's name to the dictionary under a unique key.
 func _on_PCName_received(name: String):

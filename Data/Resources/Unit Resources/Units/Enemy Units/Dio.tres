@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="UnitStatsResource" load_steps=2 format=3 uid="uid://dyycifuojkc4n"]
+
+[ext_resource type="Script" path="res://Data/Resources/Unit Resources/UnitStatsResource.gd" id="1_vlbt8"]
+
+[resource]
+script = ExtResource("1_vlbt8")
+name = "Dio"
+title = ""
+level = 1
+internal_level = 1
+experience = 0
+current_class = ""
+hp = 10
+mana = 5
+build = 3
+movement = 3
+strength = 5
+magic = 5
+dexterity = 5
+skill = 6
+speed = 5
+luck = 5
+defence = 5
+resistance = 5
+rating = 0
+might = 13
+hit = 21
+critical = 1
+physical_attack = 21
+magic_attack = 25
+avoidance = 21
+critical_chance = 2
+dodge = 21
+range = 0
+hit_chance = 34
+equipped_items = Array[String]([])
+known_skills = Array[String]([])
+equipped_skills = Array[String]([])
+actions = Array[Resource("res://Data/Resources/Action Resources/ActionResource.gd")]([])
