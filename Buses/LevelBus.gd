@@ -24,3 +24,7 @@ func mousesave(adjint):
 func _attack_button():
 	print ("Attack Button In Bus")
 	emit_signal("attack_button")
+
+func _move_button():
+	print ("Move Button In Bus")
+	emit_signal("move_button")

@@ -16,30 +16,82 @@ func _ready():
 # Function to select a target based on your criteria (e.g., closest enemy, lowest health)
 func _target_selection():
 	print("Target Selection Working")
-	var range = find_attack_range()
-	print(range)
+	var attack_range = find_attack_range()
+	print(attack_range)
+	var attacker_position = WorldState.player_positions[LevelBus.selected_unit]  # Assuming attacker is a player
+	var targets = find_enemies_within_range(attacker_position, attack_range)
 	# Implement target selection logic here
-	# Placeholder: return an example target name
+	if targets.size() > 0:
+		print("Targets Within Range: ", targets)
+	else:
+		print("No targets within attack range.")
+	
+
 
 func find_attack_range():
 	UnitBus.character_roster[LevelBus.selected_unit].update_derived_stats()
 	return(UnitBus.character_roster[LevelBus.selected_unit].range)
-
-# Function to calculate attack damage based on attacker and target stats, positions, etc.
-func calculate_attack_damage(attacker_name: String, target_name: String) -> int:
-	# Implement damage calculation logic here
-	# Placeholder: return example damage
-	return 10
-
-# Function to execute an attack, applying damage to the target and triggering any side effects
-func execute_attack(attacker_name: String, target_name: String):
-	var damage = calculate_attack_damage(attacker_name, target_name)
-	# Apply damage to the target here (adjust health, check for death, etc.)
 	
-	# Emit a signal that an attack has been executed
-	emit_signal("attack_executed", attacker_name, target_name, damage)
+# Method to find all enemies within range of an attack
+func find_enemies_within_range(attacker_position: Vector3, attack_range: int) -> Array:
+	var targets = []  # This will hold the names of all targets within range
+	for x in range(-attack_range, attack_range + 1):
+		for z in range(-attack_range, attack_range + 1):
+			# Calculate the potential target position
+			var target_position = attacker_position + Vector3(x, 0, z)
+			# Ensure we're looking within a circular (or spherical) area, not a square
+			if target_position.distance_to(attacker_position) <= attack_range:
+				var enemy_name = WorldState.get_enemy_name_by_position(target_position)
+				if enemy_name != "":
+					# Add the found enemy to the targets list
+					targets.append(enemy_name)
+	send_targets_to_ui(targets)
+	return targets
 
-	# Check if the combat has ended (e.g., one side has no more units)
-	# If so, emit the combat_ended signal with the name of the winner
-	# Placeholder: Emitting combat ended for demonstration
-	# emit_signal("combat_ended", "WinnerName")
+func send_targets_to_ui(targets):
+	print("Targets sent to ui: ", targets)
+	var action_list = $"../../UI/Action List"
+	action_list.create_target_buttons(targets)
+
+func handle_target_selected(target_name):
+	print("Target ", target_name, " has been selected for the attack.")
+	battle_forecast(target_name)
+
+func battle_forecast(target_name):
+	var attacker_stats = UnitBus.character_roster[LevelBus.selected_unit]
+	var defender_stats = WorldState.enemy_roster[target_name]
+
+	var attacker_forecast = calculate_combat_forecast(attacker_stats, defender_stats)
+	var defender_forecast = calculate_combat_forecast(defender_stats, attacker_stats)
+	print(attacker_forecast)
+
+	# Assuming ActionList is an autoloaded singleton for simplicity
+	var actionlist = $"../../UI/Action List"
+	actionlist.display_combat_forecast(attacker_forecast, defender_forecast)
+
+func calculate_combat_forecast(attacker_stats, defender_stats) -> Dictionary:
+	var forecast = {
+		"new_current_hp": max(0, attacker_stats.hp - (defender_stats.physical_attack - attacker_stats.defense)),
+		"physical_damage": max(0, attacker_stats.physical_attack - defender_stats.defense),
+		"displayed_hit": max(0, attacker_stats.hit_chance - defender_stats.avoidance),
+		"displayed_crit": max(0, attacker_stats.critical_chance - defender_stats.dodge)
+	}
+	
+	return forecast
+
+func execute_combat(attacker_name: String, defender_name: String):
+	# Here, you would use the previously calculated forecast data
+	# to adjust the stats of the attacker and defender, simulate combat, etc.
+	# For example:
+	print("Executing combat between", attacker_name, "and", defender_name)
+	# Perform actual stat adjustments, check for combat outcomes, etc.
+
+# CombatService.gd
+
+# True Hit calculation based on displayed hit chance
+func true_hit(displayed_hit: int) -> bool:
+	var rand1 = randi() % 100
+	var rand2 = randi() % 100
+	var true_hit_chance = (rand1 + rand2) / 2.0
+	return true_hit_chance < displayed_hit
+

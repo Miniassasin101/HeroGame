@@ -10,13 +10,13 @@ func _ready():
 	var sprite_3d = Sprite3D.new()
 	var texture_path = "res://Maps/Level Prototyping/sprites/FacelessP.png"
 	var texture = load(texture_path)
-	var sprite_name = "Dio"
+	var sprite_name = "Jotaro"
 	if texture:
 		sprite_3d.texture = texture
 	else:
 		print("Failed to load texture at path: " + texture_path)
 	sprite_3d.set_billboard_mode(1)
-	var ranx = randi_range(2, 3) 
+	var ranx = randi_range(4, 5) 
 	var startpos = Vector3(ranx + 0.75, 1, 3.75)
 	var updpos = startpos + Vector3(-0.25, 0, -0.25)
 	sprite_3d.set_position(startpos)

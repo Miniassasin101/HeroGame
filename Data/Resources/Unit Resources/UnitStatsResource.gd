@@ -12,6 +12,7 @@ signal experience_gained(character_name)
 #Base Stats
 @export_group("Base_Stats")
 @export var hp: int = 15
+@export var current_hp: int = 15
 @export var mana: int = 5
 @export var build: int = 3
 @export var movement: int = 3
@@ -21,7 +22,7 @@ signal experience_gained(character_name)
 @export var skill: int = 6
 @export var speed: int = 5
 @export var luck: int = 5
-@export var defence: int = 5
+@export var defense: int = 5
 @export var resistance: int = 5
 @export_subgroup("Derived_Stats")
 @export var rating: int = 0
@@ -80,6 +81,7 @@ func apply_growth_rates():
 # Directly increase stats based on growth rates
 	if randi() % 100 < growth_rates["HP"]:
 		hp += 1
+		current_hp += 1
 	if randi() % 100 < growth_rates["Strength"]:
 		strength += 1
 	if randi() % 100 < growth_rates["Magic"]:
@@ -93,7 +95,7 @@ func apply_growth_rates():
 	if randi() % 100 < growth_rates["Luck"]:
 		luck += 1
 	if randi() % 100 < growth_rates["Defense"]:
-		defence += 1
+		defense += 1
 	if randi() % 100 < growth_rates["Resistance"]:
 		resistance += 1
 # Note: Movement typically does not increase on level up
@@ -119,7 +121,7 @@ func calculate_magic_attack():
 	return magic + (equipped_weapon.might if equipped_weapon else 0)
 func calculate_rating():
 # Assuming 'build' is also part of base stats for simplicity
-	return strength + magic + skill + speed + luck + defence + resistance + build
+	return strength + magic + skill + speed + luck + defense + resistance + build
 func calculate_hit_chance():
 	return (equipped_weapon.hit if equipped_weapon else 0) + ((skill * 3 + luck) / 2)
 func calculate_avoidance():
@@ -167,7 +169,7 @@ func update_derived_stats():
 	physical_attack = calculate_physical_attack()
 	magic_attack = calculate_magic_attack()
 	rating = calculate_rating()
-	hit = calculate_hit_chance()
+	hit_chance = calculate_hit_chance()
 	avoidance = calculate_avoidance()
 	critical_chance = calculate_critical_chance()
 	dodge = calculate_dodge()

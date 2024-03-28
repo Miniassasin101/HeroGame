@@ -77,7 +77,7 @@ func update_character_sheet(character_name):
 	mag_label.text = "Mag: " + str(character.magic)
 	dex_label.text = "Dex: " + str(character.dexterity)
 	spd_label.text = "Spd: " + str(character.speed)
-	def_label.text = "Def: " + str(character.defence)
+	def_label.text = "Def: " + str(character.defense)
 	res_label.text = "Res: " + str(character.resistance)
 	lck_label.text = "Lck: " + str(character.luck)
 	skill_label.text = "Skill: " + str(character.skill)
