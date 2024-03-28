@@ -2,6 +2,8 @@
 #this script manages it's unit node children and routes to them any unit specific data.
 extends Node
 
+signal turn_finished
+
 # Dictionary to hold combatant names.
 var combatants = {}
 # Counter to keep track of the units.
@@ -13,8 +15,24 @@ signal unit_name_assigned(unit_key, name)
 func _ready():
 	UnitBus.connect("PCName", Callable(self, "_on_PCName_received"))
 
+func start_turn():
+	print(self.name, " starts its turn.")
+	LevelBus.turn = "player"
+	# Logic for the group to take actions goes here
+
+	# For demonstration, we'll just emit the turn_finished signal immediately
+	# In a real game, this would happen after the group has taken its actions
+func end_turn():
+	print("Player Turn Ended")
+	emit_signal("turn_finished")
+
 #Work in progress function for bringing up a Menu for the player so they can select one of the actions a unit has avalable to them.
 func _input(event):
+	#End Turn Hotkey
+	if event.is_action_pressed("End Turn"):
+		LevelBus.turn = "enemy"
+		end_turn()
+	
 	#Unit 1 hotkey
 	if event.is_action_pressed("Unit 1 Actions"):
 		LevelBus.menu_toggle1 = "actions"

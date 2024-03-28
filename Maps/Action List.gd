@@ -86,12 +86,17 @@ func _on_target_button_pressed(target_name):
 	comser.handle_target_selected(target_name)
 
 func _on_move_button_pressed():
-	LevelBus.menu_toggle1 = "move"
-	print("in move mode and selected unit is: " + LevelBus.selected_unit)
-	LevelBus._move_button()
-	
+	if LevelBus.turn == "player":
+		LevelBus.menu_toggle1 = "move"
+		print("in move mode and selected unit is: " + LevelBus.selected_unit)
+		LevelBus._move_button()
+	else:
+		print("Wait Your Turn")
 func _on_attack_button_pressed():
-	LevelBus.menu_toggle1 = "attack"
-	print("Attack Button Pressed")
-	LevelBus._attack_button()
+	if LevelBus.turn == "player":
+		LevelBus.menu_toggle1 = "attack"
+		print("Attack Button Pressed")
+		LevelBus._attack_button()
+	else:
+		print("Wait Your Turn")
 	
