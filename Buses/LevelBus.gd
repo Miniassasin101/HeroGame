@@ -3,7 +3,7 @@ extends Node
 var menu_toggle1 = "default"
 var unit_key = "default"
 var selected_unit = "default"
-
+var selected_target = "default"
 signal mousepos(adjint)
 
 signal move_button()

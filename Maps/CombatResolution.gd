@@ -58,6 +58,7 @@ func handle_target_selected(target_name):
 	battle_forecast(target_name)
 
 func battle_forecast(target_name):
+	LevelBus.selected_target = target_name
 	var attacker_stats = UnitBus.character_roster[LevelBus.selected_unit]
 	var defender_stats = WorldState.enemy_roster[target_name]
 
@@ -71,7 +72,7 @@ func battle_forecast(target_name):
 
 func calculate_combat_forecast(attacker_stats, defender_stats) -> Dictionary:
 	var forecast = {
-		"new_current_hp": max(0, attacker_stats.hp - (defender_stats.physical_attack - attacker_stats.defense)),
+		"new_current_hp": max(0, attacker_stats.current_hp - (defender_stats.physical_attack - attacker_stats.defense)),
 		"physical_damage": max(0, attacker_stats.physical_attack - defender_stats.defense),
 		"displayed_hit": max(0, attacker_stats.hit_chance - defender_stats.avoidance),
 		"displayed_crit": max(0, attacker_stats.critical_chance - defender_stats.dodge)
@@ -79,12 +80,47 @@ func calculate_combat_forecast(attacker_stats, defender_stats) -> Dictionary:
 	
 	return forecast
 
-func execute_combat(attacker_name: String, defender_name: String):
+func execute_combat():
 	# Here, you would use the previously calculated forecast data
 	# to adjust the stats of the attacker and defender, simulate combat, etc.
 	# For example:
-	print("Executing combat between", attacker_name, "and", defender_name)
-	# Perform actual stat adjustments, check for combat outcomes, etc.
+	print("Executing combat between", LevelBus.selected_unit, "and", LevelBus.selected_target)
+	var attacker_name = LevelBus.selected_unit
+	var defender_name = LevelBus.selected_target  # This should be set when a target button is pressed
+	var attacker_stats = UnitBus.character_roster[attacker_name]
+	var defender_stats = WorldState.enemy_roster[defender_name]
+	
+	# Get forecasts to perform combat calculations
+	var attacker_forecast = calculate_combat_forecast(attacker_stats, defender_stats)
+	var defender_forecast = calculate_combat_forecast(defender_stats, attacker_stats)
+	
+	# Attacker's turn
+	if true_hit(attacker_forecast["displayed_hit"]):
+		var damage_dealt = attacker_forecast["physical_damage"]
+		if randi() % 100 < attacker_forecast["displayed_crit"]:
+			damage_dealt *= 2  # Critical hit doubles damage
+			print("Critical Hit!")
+		defender_stats.current_hp = max(0, defender_stats.current_hp - damage_dealt)
+		print("Attacker hit! Defender's new HP: ", defender_stats.current_hp)
+	else:
+		print("Attacker missed!")
+	
+	# Defender's turn (if in range and alive)
+	if defender_stats.current_hp > 0:# and attacker_stats.range <= defender_stats.range:
+		if true_hit(defender_forecast["displayed_hit"]):
+			var damage_dealt = defender_forecast["physical_damage"]
+			if randi() % 100 < defender_forecast["displayed_crit"]:
+				pass
+				damage_dealt *= 2  # Critical hit doubles damage
+			attacker_stats.current_hp = max(0, attacker_stats.current_hp - damage_dealt)
+			print("Defender hit! Attacker's new HP: ", attacker_stats.current_hp)
+		else:
+			print("Defender missed!")
+	
+	# Emit signals based on combat outcome, for example:
+#	emit_signal("attack_executed", attacker_name, defender_name, damage_dealt)
+	if attacker_stats.current_hp <= 0 or defender_stats.current_hp <= 0:
+		emit_signal("combat_ended", attacker_name if defender_stats.current_hp <= 0 else defender_name)
 
 # CombatService.gd
 

@@ -10,11 +10,12 @@ func _ready():
 
 func display_combat_forecast(attacker_forecast, defender_forecast):
 	var vbox = $"Control/Attack Options/VBoxContainer"
-	vbox.show()  # Clear existing content
+	#vbox.show()  # Clear existing content
 	for n in vbox.get_children():
 		vbox.remove_child(n)
 		n.queue_free()
-	
+	#var attack_options = $"Control/Attack Options"
+	#attack_options.set_visible(true)
 	
 	create_forecast_row("HP", attacker_forecast["new_current_hp"], defender_forecast["new_current_hp"])
 	create_forecast_row("Atk", attacker_forecast["physical_damage"], defender_forecast["physical_damage"])
@@ -30,6 +31,13 @@ func display_combat_forecast(attacker_forecast, defender_forecast):
 func _on_confirm_attack_pressed():
 	# Signal CombatService to execute the combat
 	var comser = $"../../Services/Combat Service"
+	var vbox = $"Control/Attack Options/VBoxContainer"
+	#vbox.hide()  # Clear existing content
+	#var attack_options = $"Control/Attack Options"
+	#attack_options.set_visible(false)
+	for n in vbox.get_children():
+		vbox.remove_child(n)
+		n.queue_free()
 	comser.execute_combat()
 
 # Helper function to create UI elements

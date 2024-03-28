@@ -13,7 +13,7 @@ signal experience_gained(character_name)
 @export_group("Base_Stats")
 @export var hp: int = 15
 @export var current_hp: int = 15
-@export var mana: int = 5
+@export var ap: int = 3
 @export var build: int = 3
 @export var movement: int = 3
 @export var strength: int = 5
@@ -159,7 +159,9 @@ func update_health(current: int, max: int):
 # Assuming you have a max health variable
 # max_hp = max
 func update_mana(current_mana: int):
-	mana = current_mana
+	pass
+	#mana = current_mana
+	
 func update_build(new_build: int):
 	build = new_build
 	apply_modifiers()  # Recalculate since build affects other stats
