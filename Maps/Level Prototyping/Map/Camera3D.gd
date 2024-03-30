@@ -14,10 +14,14 @@ func _ready():
 	pass
 
 func _input(event):
-	if LevelBus.menu_toggle1 == "move":
-		if event.is_action_pressed("move"):
-			var adjusted_positition = shoot_ray()
-			LevelBus.mousesave(adjusted_positition)
+	if event.is_action_pressed("move"):
+		if LevelBus.menu_toggle1 == "move":
+			if LevelBus.selected_unit == "default":
+				print("Selected target is null")
+			else:
+				var adjusted_positition = shoot_ray()
+				LevelBus.mousesave(adjusted_positition)
+		
 			
 	else:
 		pass
