@@ -68,7 +68,7 @@ func move_sprite_along_path(path: PackedVector3Array):
 		var to_position = path[i + 1]
 		print("To Position:")
 		print(to_position)
-		var actualmov = to_position + Vector3(.25, 1, .25)
+		var actualmov = to_position + Vector3(0, 1, 0)
 		print("Actual Move:")
 		print(actualmov)
 		var updatepos = to_position + Vector3(0, 1, 0)
