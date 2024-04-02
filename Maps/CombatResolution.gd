@@ -15,6 +15,12 @@ func _ready():
 
 # Function to select a target based on your criteria (e.g., closest enemy, lowest health)
 func perform_attack(attacker: UnitStatsResource, defender: UnitStatsResource):
+	if attacker.ap < 1:
+		print(attacker.name + " does not have enough action points to attack.")
+		return
+		# Consume 1 AP for the attack
+	print("Attack AP Cost Commencing")
+	attacker.ap -= 1
 	# Determine if the attack hits
 	var hit_chance = calculate_hit_chance(attacker, defender)
 	var does_hit = randi() % 100 < hit_chance
@@ -163,8 +169,15 @@ func calculate_combat_forecast(attacker: UnitStatsResource, defender: UnitStatsR
 	return forecast
 
 func execute_combat(attacker: UnitStatsResource, defender: UnitStatsResource):
-	# First, check if the attack hits
 	
+	if attacker.ap < 1:
+		print(attacker.name + " does not have enough action points to attack.")
+		return
+		# Consume 1 AP for the attack
+	print("Attack AP Cost Commencing")
+	attacker.ap -= 1
+	
+	# First, check if the attack hits
 	var hit_chance = calculate_hit_chance(attacker, defender)
 	var does_hit = randi() % 100 < hit_chance
 

@@ -62,6 +62,19 @@ func use_skill(skill_name: String, target = null):
 	else:
 		print("Skill not known or equipped:", skill_name)
 
+func reset_ap():
+	ap = 3  # Resetting AP to its maximum
+
+# Consume AP for an action
+func consume_ap(character: UnitStatsResource, cost: int) -> bool:
+	if character.ap >= cost:
+		character.ap -= cost
+		print(character.name + " uses " + str(cost) + " AP. " + str(character.ap) + " AP remaining.")
+		return true
+	else:
+		print(character.name + " does not have enough AP to perform this action.")
+		return false
+
 func character_nature_aligned_skills() -> Array:
 	# Return an array of skill names that align with the character's Nature
 	# This should be customized based on the character's specific Nature traits

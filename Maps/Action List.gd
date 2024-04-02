@@ -90,6 +90,13 @@ func _on_target_button_pressed(target_name):
 	comser.handle_target_selected(target_name)
 
 func _on_move_button_pressed():
+	var moving_unit = UnitBus.character_roster[LevelBus.selected_unit]
+	if moving_unit.ap < 1:
+		print(moving_unit.name + " does not have enough action points to move.")
+		return
+		# Consume 1 AP for the attack
+	print("Attack AP Cost Commencing")
+	moving_unit.ap -= 1
 	if LevelBus.turn == "player":
 		LevelBus.menu_toggle1 = "move"
 		print("in move mode and selected unit is: " + LevelBus.selected_unit)
