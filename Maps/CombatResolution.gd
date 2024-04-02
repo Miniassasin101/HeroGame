@@ -14,6 +14,22 @@ func _ready():
 	LevelBus.connect("attack_button", Callable(self, "_target_selection"))
 
 # Function to select a target based on your criteria (e.g., closest enemy, lowest health)
+func perform_attack(attacker: UnitStatsResource, defender: UnitStatsResource):
+	# Determine if the attack hits
+	var hit_chance = calculate_hit_chance(attacker, defender)
+	var does_hit = randi() % 100 < hit_chance
+	
+	# Calculate damage if the attack hits
+	if does_hit:
+		var damage = calculate_damage(attacker, defender)
+		# Apply damage to the defender
+		defender.current_hp -= damage
+		emit_signal("attack_executed", attacker.name, defender.name, damage)
+		
+		# Check if the defender is defeated
+		if defender.current_hp <= 0:
+			emit_signal("combat_ended", attacker.name)
+
 func _target_selection():
 	print("Target Selection Working")
 	var attack_range = find_attack_range()
@@ -29,8 +45,9 @@ func _target_selection():
 
 
 func find_attack_range():
-	UnitBus.character_roster[LevelBus.selected_unit].update_derived_stats()
-	return(UnitBus.character_roster[LevelBus.selected_unit].range)
+	print("Range: ")
+	print(UnitBus.character_roster[LevelBus.selected_unit].equipped_weapon.range)
+	return(UnitBus.character_roster[LevelBus.selected_unit].equipped_weapon.range)
 	
 # Method to find all enemies within range of an attack
 func find_enemies_within_range(attacker_position: Vector3, attack_range: int) -> Array:
@@ -63,71 +80,154 @@ func battle_forecast(target_name):
 	var defender_stats = WorldState.enemy_roster[target_name]
 
 	var attacker_forecast = calculate_combat_forecast(attacker_stats, defender_stats)
-	var defender_forecast = calculate_combat_forecast(defender_stats, attacker_stats)
+	#var defender_forecast = calculate_combat_forecast(defender_stats, attacker_stats)
+	print("Attacker Forecast: ")
 	print(attacker_forecast)
 
 	# Assuming ActionList is an autoloaded singleton for simplicity
 	var actionlist = $"../../UI/Action List"
-	actionlist.display_combat_forecast(attacker_forecast, defender_forecast)
+	actionlist.display_combat_forecast(attacker_forecast)
 
-func calculate_combat_forecast(attacker_stats, defender_stats) -> Dictionary:
+
+
+
+func calculate_hit_chance(attacker: UnitStatsResource, defender: UnitStatsResource) -> int:
+	# Example calculation, should be adjusted based on your game's rules
+	var attacker_accuracy = attacker.technique + calculate_modifier(attacker.mind)
+	var defender_evasion = defender.movement + calculate_modifier(defender.mind)
+	return max(0, attacker_accuracy - defender_evasion + 50) # Base 50% chance modified by stats
+
+
+func calculate_damage(attacker: UnitStatsResource, defender: UnitStatsResource) -> int:
+	# Use the equipped weapon's damage dice and attacker's strength for damage calculation
+	if attacker.equipped_weapon:
+		var weapon = attacker.equipped_weapon
+		print("Weapon Name: ")
+		print(weapon.name)
+		var damage_dice = weapon.damage_dice
+		var damage_type = weapon.damage_type
+		var strength_bonus = calculate_modifier(attacker.strength)
+		
+		# Calculate base damage
+		var damage = roll_damage(damage_dice) + strength_bonus
+		print("Damage: ")
+		print(damage)
+		# Check for critical hit, etc., and adjust damage accordingly
+		# This is simplified; you might have more complex logic
+		return damage
+	else:
+		# Fallback if no weapon is equipped
+		return roll_damage("1d4") # Unarmed or basic attack
+
+func roll_damage(damage_dice: String) -> int:
+	print("Func check")
+	# Simplified example of rolling damage based on a string like "1d6"
+	var parts = damage_dice.split("d")
+	if parts.size() == 2:
+		var count = int(parts[0])
+		var sides = int(parts[1])
+		var total = 0
+		for i in range(count):
+			print("Rolled Number:")
+			total += randi() % sides + 1
+			print(total)
+		print("Total:")
+		print (total)
+		return total
+	return 0
+
+func calculate_modifier(stat_value: int) -> int:
+	return floor((stat_value - 10) / 2.0)
+	
+
+# New method to calculate combat forecast
+func calculate_combat_forecast(attacker: UnitStatsResource, defender: UnitStatsResource) -> Dictionary:
 	var forecast = {
-		"new_current_hp": max(0, attacker_stats.current_hp - (defender_stats.physical_attack - attacker_stats.defense)),
-		"physical_damage": max(0, attacker_stats.physical_attack - defender_stats.defense),
-		"displayed_hit": max(0, attacker_stats.hit_chance - defender_stats.avoidance),
-		"displayed_crit": max(0, attacker_stats.critical_chance - defender_stats.dodge)
+		"attacker_name": attacker.name,
+		"defender_name": defender.name,
+		"hit_chance": calculate_hit_chance(attacker, defender),
+		"expected_damage": 0, # Placeholder, will calculate below
+		"critical_chance": calculate_critical_chance(attacker), # This requires a new method
+		#"defender_counter_chance": calculate_hit_chance(defender, attacker), # Assuming counter-attacks are possible
+		#"defender_expected_counter_damage": 0 # Placeholder, similar calculation as expected_damage
 	}
+	
+	# Calculate expected damage if the attack hits
+	if forecast.hit_chance > 0:
+		forecast.expected_damage = calculate_expected_damage(attacker, defender)
+		
+	# Calculate expected counter damage if the defender can counter
+	#if forecast.defender_counter_chance > 0:
+	#	forecast.defender_expected_counter_damage = calculate_expected_damage(defender, attacker)
 	
 	return forecast
 
-func execute_combat():
-	# Here, you would use the previously calculated forecast data
-	# to adjust the stats of the attacker and defender, simulate combat, etc.
-	# For example:
-	print("Executing combat between", LevelBus.selected_unit, "and", LevelBus.selected_target)
-	var attacker_name = LevelBus.selected_unit
-	var defender_name = LevelBus.selected_target  # This should be set when a target button is pressed
-	var attacker_stats = UnitBus.character_roster[attacker_name]
-	var defender_stats = WorldState.enemy_roster[defender_name]
+func execute_combat(attacker: UnitStatsResource, defender: UnitStatsResource):
+	# First, check if the attack hits
 	
-	# Get forecasts to perform combat calculations
-	var attacker_forecast = calculate_combat_forecast(attacker_stats, defender_stats)
-	var defender_forecast = calculate_combat_forecast(defender_stats, attacker_stats)
-	
-	# Attacker's turn
-	if true_hit(attacker_forecast["displayed_hit"]):
-		var damage_dealt = attacker_forecast["physical_damage"]
-		if randi() % 100 < attacker_forecast["displayed_crit"]:
-			damage_dealt *= 2  # Critical hit doubles damage
-			print("Critical Hit!")
-		defender_stats.current_hp = max(0, defender_stats.current_hp - damage_dealt)
-		print("Attacker hit! Defender's new HP: ", defender_stats.current_hp)
-	else:
-		print("Attacker missed!")
-	
-	# Defender's turn (if in range and alive)
-	if defender_stats.current_hp > 0:# and attacker_stats.range <= defender_stats.range:
-		if true_hit(defender_forecast["displayed_hit"]):
-			var damage_dealt = defender_forecast["physical_damage"]
-			if randi() % 100 < defender_forecast["displayed_crit"]:
-				pass
-				damage_dealt *= 2  # Critical hit doubles damage
-			attacker_stats.current_hp = max(0, attacker_stats.current_hp - damage_dealt)
-			print("Defender hit! Attacker's new HP: ", attacker_stats.current_hp)
+	var hit_chance = calculate_hit_chance(attacker, defender)
+	var does_hit = randi() % 100 < hit_chance
+
+	if does_hit:
+		# If the attack hits, calculate the actual damage
+		var damage = calculate_damage(attacker, defender)
+
+		# Apply the damage to the defender's current_hp
+		defender.current_hp -= damage
+
+		# Emit a signal to indicate that an attack was executed
+		emit_signal("attack_executed", attacker.name, defender.name, damage)
+
+		# Check if the defender is defeated (i.e., current_hp <= 0)
+		if defender.current_hp <= 0:
+			# Emit a signal to indicate that combat ended, specifying the winner
+			emit_signal("combat_ended", attacker.name)
+			print(defender.name + " was defeated by " + attacker.name + "!")
 		else:
-			print("Defender missed!")
-	
-	# Emit signals based on combat outcome, for example:
-#	emit_signal("attack_executed", attacker_name, defender_name, damage_dealt)
-	if attacker_stats.current_hp <= 0 or defender_stats.current_hp <= 0:
-		emit_signal("combat_ended", attacker_name if defender_stats.current_hp <= 0 else defender_name)
+			print(defender.name + " now has " + str(defender.current_hp) + " HP left.")
+	else:
+		# If the attack does not hit, inform that the attack missed
+		print(attacker.name + "'s attack missed " + defender.name + ".")
 
-# CombatService.gd
 
-# True Hit calculation based on displayed hit chance
-func true_hit(displayed_hit: int) -> bool:
-	var rand1 = randi() % 100
-	var rand2 = randi() % 100
-	var true_hit_chance = (rand1 + rand2) / 2.0
-	return true_hit_chance < displayed_hit
+func calculate_expected_damage(attacker: UnitStatsResource, defender: UnitStatsResource) -> Dictionary:
+	# Simplified expected damage calculation
+	var damage_range = []
+	if attacker.equipped_weapon:
+		var weapon = attacker.equipped_weapon
+		damage_range = get_damage_range(weapon.damage_dice)
+	else:
+		damage_range = get_damage_range("1d4")
+	var min_damage = damage_range[0]
+	var max_damage = damage_range[1]
+	var strength_bonus = calculate_modifier(attacker.strength)
+		
+	# Adjust damage range by strength modifier
+	min_damage += strength_bonus
+	max_damage += strength_bonus
+	print("Min and max damages:")
+	print(min_damage)
+	print(max_damage)
+	print("Expected Damage:")
+	print({"min_damage": max(0, min_damage), "max_damage": max(0, max_damage)})
+	return {"min_damage": max(0, min_damage), "max_damage": max(0, max_damage)}
+	#possible logic for damage reduction baseed on defense stat
 
+
+func get_damage_range(damage_dice: String) -> Array:
+	var parts = damage_dice.split("d")
+	if parts.size() == 2:
+		var dice_count = int(parts[0])
+		var dice_sides = int(parts[1])
+
+		# Calculate minimum and maximum possible damage
+		var min_damage = dice_count  # Minimum damage is one per die
+		var max_damage = dice_count * dice_sides  # Maximum damage is the highest roll per die
+
+		return [min_damage, max_damage]
+	return [0, 0]  # Return [0, 0] if damage_dice format is incorrect
+
+func calculate_critical_chance(attacker: UnitStatsResource) -> int:
+	# Placeholder for critical hit chance calculation
+	# You'll need to define how critical chances are determined in your game's rules
+	return 10 # Example: 10% critical chance

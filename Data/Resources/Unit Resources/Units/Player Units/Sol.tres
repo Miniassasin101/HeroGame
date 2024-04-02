@@ -1,42 +1,45 @@
-[gd_resource type="Resource" script_class="UnitStatsResource" load_steps=3 format=3 uid="uid://dbypbrijc36nn"]
+[gd_resource type="Resource" script_class="UnitStatsResource" load_steps=4 format=3 uid="uid://dbypbrijc36nn"]
 
-[ext_resource type="Resource" uid="uid://5pxy3yy7bry" path="res://Data/Resources/Weapon Resources/Weapons/iron_sword.tres" id="1_6ix32"]
+[ext_resource type="Script" path="res://Data/Resources/Weapon Resources/WeaponStatsResource.gd" id="1_1unya"]
 [ext_resource type="Script" path="res://Data/Resources/Unit Resources/UnitStatsResource.gd" id="1_gwtoj"]
+
+[sub_resource type="Resource" id="Resource_mpie6"]
+script = ExtResource("1_1unya")
+name = ""
+damage_dice = "1d6"
+damage_type = "B"
+range_increment = 0
+reload_actions = 0
+hands_required = "1"
+weapon_group = ""
+weapon_traits = Array[String]([])
+ammunition_type = ""
+magical_properties = {}
 
 [resource]
 script = ExtResource("1_gwtoj")
 name = "Sol"
 title = ""
-level = 1
+rank = 1
 internal_level = 1
 experience = 0
 current_class = "fighter"
+life = 2
+mind = 2
+spirit = 2
+nature = 2
+vigor = 12
+strength = 5
+technique = 12
+insight = 12
+will = 12
+conviction = 12
 hp = 15
 current_hp = 15
-mana = 5
-build = 3
+ap = 3
 movement = 3
-strength = 5
-magic = 5
-dexterity = 14
-skill = 5
-speed = 5
-luck = 5
-defense = 10
-resistance = 5
-rating = 0
-might = 13
-hit = 21
-critical = 1
-physical_attack = 21
-magic_attack = 25
-avoidance = 21
-critical_chance = 2
-dodge = 21
-range = 1
-hit_chance = 1
-equipped_weapon = ExtResource("1_6ix32")
+traits = Array[String]([])
+equipped_weapons = Array[ExtResource("1_1unya")]([SubResource("Resource_mpie6"), null])
 equipped_items = Array[String]([])
 known_skills = Array[String]([])
-equipped_skills = Array[String]([])
 actions = Array[Resource("res://Data/Resources/Action Resources/ActionResource.gd")]([])

@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="UnitStatsResource" load_steps=3 format=3 uid="uid://om82jijk12i1"]
+[gd_resource type="Resource" script_class="UnitStatsResource" load_steps=2 format=3 uid="uid://om82jijk12i1"]
 
-[ext_resource type="Resource" uid="uid://defufkdgtlicq" path="res://Data/Resources/Weapon Resources/Weapons/iron_axe.tres" id="1_2r3b2"]
 [ext_resource type="Script" path="res://Data/Resources/Unit Resources/UnitStatsResource.gd" id="1_soawq"]
 
 [resource]
@@ -8,36 +7,26 @@ resource_name = "Nox"
 script = ExtResource("1_soawq")
 name = "Nox"
 title = ""
-level = 2
+rank = 1
 internal_level = 1
 experience = 0
 current_class = ""
+life = 2
+mind = 2
+spirit = 2
+nature = 2
+vigor = 12
+strength = 10
+technique = 12
+insight = 12
+will = 12
+conviction = 12
 hp = 30
 current_hp = 30
-mana = 5
-build = 3
+ap = 3
 movement = 3
-strength = 10
-magic = 5
-dexterity = 5
-skill = 5
-speed = 5
-luck = 5
-defense = 5
-resistance = 5
-rating = 0
-might = 18
-hit = 21
-critical = 1
-physical_attack = 21
-magic_attack = 25
-avoidance = 21
-critical_chance = 2
-dodge = 21
-range = 1
-hit_chance = 34
-equipped_weapon = ExtResource("1_2r3b2")
+traits = Array[String]([])
+equipped_weapons = Array[Resource("res://Data/Resources/Weapon Resources/WeaponStatsResource.gd")]([])
 equipped_items = Array[String]([])
 known_skills = Array[String]([])
-equipped_skills = Array[String]([])
 actions = Array[Resource("res://Data/Resources/Action Resources/ActionResource.gd")]([])

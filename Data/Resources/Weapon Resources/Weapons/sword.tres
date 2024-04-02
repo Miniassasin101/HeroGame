@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WeaponStatsResource" load_steps=2 format=3 uid="uid://c6d2yu7wdixls"]
+
+[ext_resource type="Script" path="res://Data/Resources/Weapon Resources/WeaponStatsResource.gd" id="1_mkpsd"]
+
+[resource]
+script = ExtResource("1_mkpsd")
+name = "Sword"
+damage_dice = "1d6"
+damage_type = "S"
+range_increment = 1
+reload_actions = 0
+hands_required = "1"
+weapon_group = "Sword"
+weapon_traits = Array[String]([])
+ammunition_type = ""
+magical_properties = {}

@@ -2,108 +2,101 @@
 extends Resource
 class_name UnitStatsResource
 signal experience_gained(character_name)
+
 @export var name: String
 @export var title: String
-@export var level: int = 1
+@export var rank: int = 1
 @export var internal_level: int = 1
 @export var experience: int = 0
 @export var current_class: String
 
+# Base Core Stats
+@export var life: int = 2
+@export var mind: int = 2
+@export var spirit: int = 2
+@export var nature: int = 2
+# Derived Stats (initialized based on core stats)
+@export var vigor: int = 12  # Life-based, example starting value
+@export var strength: int = 12  # Life-based
+@export var technique: int = 12  # Mind-based
+@export var insight: int = 12  # Mind-based
+@export var will: int = 12  # Spirit-based
+@export var conviction: int = 12  # Spirit-based
+
 #Base Stats
-@export_group("Base_Stats")
 @export var hp: int = 15
 @export var current_hp: int = 15
 @export var ap: int = 3
-@export var build: int = 3
 @export var movement: int = 3
-@export var strength: int = 5
-@export var magic: int = 5
-@export var dexterity: int = 5
-@export var skill: int = 6
-@export var speed: int = 5
-@export var luck: int = 5
-@export var defense: int = 5
-@export var resistance: int = 5
-@export_subgroup("Derived_Stats")
-@export var rating: int = 0
-@export var might: int = 13
-@export var hit: int = 21
-@export var critical: int = 1
-@export var physical_attack: int = 21
-@export var magic_attack: int = 25
-@export var avoidance: int = 21
-@export var critical_chance: int = 2
-@export var dodge: int = 21
-@export var range: int = 1
-@export var hit_chance: int = 34
-@export_group("")
+
+@export var traits: Array[String] = []
+
+
 @export var equipped_weapon: WeaponStatsResource
 @export var equipped_items: Array[String]
 @export var known_skills: Array[String]
-@export var equipped_skills: Array[String]
 @export var actions: Array[ActionResource] = []
 
-
-var growth_rates = {
-	"HP": 25,  # Percent chance to increase on level up
-	"Strength": 60,
-	"Magic": 60,
-	"Skill": 50,
-	"Dexterity": 100,
-	"Speed": 40,
-	"Luck": 60,
-	"Defense": 60,
-	"Resistance":60,
-	"Movement": 0  # Typically does not grow on level up
-}
+func calculate_modifier(stat_value: int) -> int:
+	return floor((stat_value - 10) / 2.0)
 
 func gain_experience(exp: int):
 	experience += exp
 	while experience >= 100:
 		experience -= 100
-		level_up()
-	#check_for_level_up()
-	#emit_signal("experience_gained", name)  # Ensure the character's name is passed with the signal
+		rank_up()
+
+
+func use_skill(skill_name: String, target = null):
+	if skill_name in known_skills:
+		# Example: Check if the skill aligns with the character's Nature
+		var nature_bonus = 0
+		if skill_name in character_nature_aligned_skills():
+			nature_bonus = calculate_nature_bonus()
+			print("Using skill aligned with Nature:", skill_name, "-> Bonus applied")
+		elif skill_name in character_nature_opposed_skills():
+			nature_bonus = calculate_nature_penalty()
+			print("Using skill opposed to Nature:", skill_name, "-> Penalty applied")
+		
+		# Apply skill effects here, modified by nature_bonus if applicable
+	else:
+		print("Skill not known or equipped:", skill_name)
+
+func character_nature_aligned_skills() -> Array:
+	# Return an array of skill names that align with the character's Nature
+	# This should be customized based on the character's specific Nature traits
+	return []
+
+func character_nature_opposed_skills() -> Array:
+	# Return an array of skill names that are opposed to the character's Nature
+	# This should also be customized based on the character's specific Nature traits
+	return []
+
+func calculate_nature_bonus() -> int:
+	# Calculate bonus for actions that align with the character's Nature
+	return max(1, nature / 2)
+
+func calculate_nature_penalty() -> int:
+	# Calculate penalty for actions that go against the character's Nature
+	return -max(1, nature / 2)
 
 
 
 
-
-func level_up():
-	if level < 20:  # Check for level cap
-		level += 1
+func rank_up():
+	if rank < 4:  # Check for rank cap
+		rank += 1
 		internal_level += 1
-		apply_growth_rates()
 	else:
 		print("Max level reached")
 
-func apply_growth_rates():
-# Directly increase stats based on growth rates
-	if randi() % 100 < growth_rates["HP"]:
-		hp += 1
-		current_hp += 1
-	if randi() % 100 < growth_rates["Strength"]:
-		strength += 1
-	if randi() % 100 < growth_rates["Magic"]:
-		magic += 1
-	if randi() % 100 < growth_rates["Skill"]:
-		skill += 1
-	if randi() % 100 < growth_rates["Dexterity"]:
-		dexterity += 1
-	if randi() % 100 < growth_rates["Speed"]:
-		speed += 1
-	if randi() % 100 < growth_rates["Luck"]:
-		luck += 1
-	if randi() % 100 < growth_rates["Defense"]:
-		defense += 1
-	if randi() % 100 < growth_rates["Resistance"]:
-		resistance += 1
+
 # Note: Movement typically does not increase on level up
 # Call this when promoting a unit
 func promote():
-	level = 1
-	internal_level = (internal_level + 20) / 2
-	# You might also adjust growth_rates and base_stats here based on the new class
+	rank = 1
+
+
 func calculate_experience_gain(enemy_level: int, is_victory: bool):
 	# Simplified version; adjust based on your game's rules
 	var level_difference = enemy_level - internal_level
@@ -113,44 +106,24 @@ func calculate_experience_gain(enemy_level: int, is_victory: bool):
 
 # Calculate stats based on the equipped weapon
 
-func calculate_crit():
-	return (equipped_weapon.crit if equipped_weapon else 0)
-func calculate_physical_attack():
-	return strength + (equipped_weapon.might if equipped_weapon else 0)
-func calculate_magic_attack():
-	return magic + (equipped_weapon.might if equipped_weapon else 0)
-func calculate_rating():
-# Assuming 'build' is also part of base stats for simplicity
-	return strength + magic + skill + speed + luck + defense + resistance + build
-func calculate_hit_chance():
-	return (equipped_weapon.hit if equipped_weapon else 0) + ((skill * 3 + luck) / 2)
-func calculate_avoidance():
-	return (speed * 3 + luck) / 2 - (equipped_weapon.weight if equipped_weapon else 0)
-func calculate_critical_chance():
-	return (equipped_weapon.crit if equipped_weapon else 0) + (skill / 2)
-func calculate_dodge():
-	return luck
-func calculate_range():
-# Assuming weapon range is a simple value in the weapon resource
-	return (equipped_weapon.range if equipped_weapon else 1)
+# Example methods for adding or removing traits
+func add_trait(new_trait: String):
+	if new_trait not in traits:
+		traits.append(new_trait)
+		# Apply any immediate effects or stat changes associated with the new trait
 
-func calculate_current_stats():
-	calculate_rating()
-	calculate_crit()
-	calculate_physical_attack()
-	calculate_magic_attack()
-	calculate_hit_chance()
-	calculate_avoidance()
-	calculate_critical_chance()
-	calculate_dodge()
-	calculate_range()
+func remove_trait(trait_to_remove: String):
+	if trait_to_remove in traits:
+		traits.erase(trait_to_remove)
+		# Revert any effects or stat changes associated with the removed trait
 
 func _init():
-	calculate_current_stats()
+	calculate_derived_stats()
 	  # Initial calculation
 func apply_modifiers():
+	pass
 # This function applies modifiers and recalculates stats
-	calculate_current_stats()
+	#calculate_current_stats()
 	
 
 # Other Updates (assuming they are needed to be called outside)
@@ -161,21 +134,14 @@ func update_health(current: int, max: int):
 func update_mana(current_mana: int):
 	pass
 	#mana = current_mana
-	
-func update_build(new_build: int):
-	build = new_build
-	apply_modifiers()  # Recalculate since build affects other stats
 
-func update_derived_stats():
-	print("Derived stat updating")
-	physical_attack = calculate_physical_attack()
-	magic_attack = calculate_magic_attack()
-	rating = calculate_rating()
-	hit_chance = calculate_hit_chance()
-	avoidance = calculate_avoidance()
-	critical_chance = calculate_critical_chance()
-	dodge = calculate_dodge()
-	range = calculate_range()
-	critical = calculate_crit()
-	print("Printing Range")
-	print(range)
+func calculate_derived_stats():
+	# Updating derived stats based on core stats and their modifiers
+	vigor += calculate_modifier(life)
+	strength += calculate_modifier(life)
+	technique += calculate_modifier(mind)
+	insight += calculate_modifier(mind)
+	will += calculate_modifier(spirit)
+	conviction += calculate_modifier(spirit)
+	# You may add here any other derived stats calculations
+

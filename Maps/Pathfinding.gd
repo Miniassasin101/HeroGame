@@ -46,6 +46,7 @@ func _movement_var_collecter(mpos):
 		find_path_and_move_sprite(adjspritepos, mpos)
 
 func find_path_and_move_sprite(start_pos: Vector3, end_pos: Vector3):
+	update_astar_based_on_units()
 	#print(start_pos)
 	#print(end_pos)
 	LevelBus.menu_toggle1 = "wait"
@@ -68,7 +69,7 @@ func move_sprite_along_path(path: PackedVector3Array):
 		var to_position = path[i + 1]
 		print("To Position:")
 		print(to_position)
-		var actualmov = to_position + Vector3(0, 1, 0)
+		var actualmov = to_position + Vector3(-.15, 1, -.15)
 		print("Actual Move:")
 		print(actualmov)
 		var updatepos = to_position + Vector3(0, 1, 0)
@@ -155,3 +156,22 @@ func find_and_print_path(start_pos: Vector3, end_pos: Vector3):
 	else:
 		pass
 		#print("No path found between the specified points.")
+
+# Add this method to your Pathfinding.gd script
+func update_astar_based_on_units():
+	# Reset all points to be enabled initially
+	for point_id in astar.get_point_ids():
+		astar.set_point_disabled(point_id, false)
+
+	# Retrieve the current turn from WorldState
+	var current_turn = WorldState.current_turn
+	var blocked_positions = WorldState.enemy_positions if current_turn == "player" else WorldState.player_positions
+
+
+	# Disable points where blocked units are located
+	for key in blocked_positions.keys():
+		var pos = blocked_positions[key]
+		var grid_pos = grid_map.local_to_map(pos)  # Assuming pos is in world coordinates
+		var point_id = vector3i_to_id(grid_pos)
+		if astar.has_point(point_id):
+			astar.set_point_disabled(point_id, true)

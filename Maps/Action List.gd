@@ -8,19 +8,21 @@ func _ready():
 
 # ActionList.gd
 
-func display_combat_forecast(attacker_forecast, defender_forecast):
+func display_combat_forecast(attacker_forecast):
 	var vbox = $"Control/Attack Options/VBoxContainer"
-	#vbox.show()  # Clear existing content
+	# Clear existing content
 	for n in vbox.get_children():
 		vbox.remove_child(n)
 		n.queue_free()
 	#var attack_options = $"Control/Attack Options"
 	#attack_options.set_visible(true)
 	
-	create_forecast_row("HP", attacker_forecast["new_current_hp"], defender_forecast["new_current_hp"])
-	create_forecast_row("Atk", attacker_forecast["physical_damage"], defender_forecast["physical_damage"])
-	create_forecast_row("Hit", attacker_forecast["displayed_hit"], defender_forecast["displayed_hit"])
-	create_forecast_row("Crit", attacker_forecast["displayed_crit"], defender_forecast["displayed_crit"])
+	create_forecast_row("Attacker", attacker_forecast["attacker_name"], "")
+	create_forecast_row("Defender", attacker_forecast["defender_name"], "")
+	create_forecast_row("Hit Chance", str(attacker_forecast["hit_chance"]) + "%", "")
+	var dmg_range_text = str(attacker_forecast["expected_damage"]["min_damage"]) + " - " + str(attacker_forecast["expected_damage"]["max_damage"])
+	create_forecast_row("Damage:", dmg_range_text, "")
+	create_forecast_row("Crit Chance", str(attacker_forecast["critical_chance"]) + "%", "")
 	
 	# Handle player confirmation
 	var confirm_button = Button.new()
@@ -28,32 +30,23 @@ func display_combat_forecast(attacker_forecast, defender_forecast):
 	confirm_button.pressed.connect(_on_confirm_attack_pressed)
 	vbox.add_child(confirm_button)
 	
-func _on_confirm_attack_pressed():
-	# Signal CombatService to execute the combat
-	var comser = $"../../Services/Combat Service"
-	var vbox = $"Control/Attack Options/VBoxContainer"
-	#vbox.hide()  # Clear existing content
-	#var attack_options = $"Control/Attack Options"
-	#attack_options.set_visible(false)
-	for n in vbox.get_children():
-		vbox.remove_child(n)
-		n.queue_free()
-	comser.execute_combat()
+
 
 # Helper function to create UI elements
-func create_forecast_row(title, attacker_value, defender_value):
+func create_forecast_row(title, attacker_value, defender_placeholder):
 	var hbox = HBoxContainer.new()
 	var attacker_label = Label.new()
 	var title_label = Label.new()
-	var defender_label = Label.new()
+	#var defender_label = Label.new()
 
 	attacker_label.text = str(attacker_value)
 	title_label.text = title
-	defender_label.text = str(defender_value)
-
-	hbox.add_child(attacker_label)
+	#defender_label.text = str(defender_value)
+	
 	hbox.add_child(title_label)
-	hbox.add_child(defender_label)
+	hbox.add_child(attacker_label)
+	
+	#hbox.add_child(defender_label)
 	var vbox = $"Control/Attack Options/VBoxContainer"
 
 	vbox.add_child(hbox)
@@ -64,6 +57,17 @@ func create_forecast_row(title, attacker_value, defender_value):
 
 
 
+func _on_confirm_attack_pressed():
+	# Signal CombatService to execute the combat
+	var comser = $"../../Services/Combat Service"
+	var vbox = $"Control/Attack Options/VBoxContainer"
+	#vbox.hide()  # Clear existing content
+	#var attack_options = $"Control/Attack Options"
+	#attack_options.set_visible(false)
+	for n in vbox.get_children():
+		vbox.remove_child(n)
+		n.queue_free()
+	comser.execute_combat(UnitBus.character_roster[LevelBus.selected_unit], WorldState.enemy_roster[LevelBus.selected_target])
 
 
 func create_target_buttons(targets):
