@@ -31,4 +31,8 @@ func _on_group_turn_finished():
 			character.reset_ap()
 			print(character.name + "'s AP has been reset.")
 	# Start the next group's turn
+	var current_test_enemy = $"Opponent Combatant Group/Enemy 1/Controllers/AI Controller/BTPlayer"
+
+	#if current_group_index == 1:
+	#	current_test_enemy.update()
 	groups[current_group_index].start_turn()

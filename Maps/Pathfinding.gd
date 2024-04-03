@@ -61,6 +61,26 @@ func find_path_and_move_sprite(start_pos: Vector3, end_pos: Vector3):
 	else:
 		print("No path found between the specified points.")
 
+func find_path_AI(start_pos: Vector3, end_pos: Vector3):
+	update_astar_based_on_units()
+	print("work work Angelica")
+	print(start_pos)
+	print(end_pos)
+
+	var start_id = vector3i_to_id(grid_map.local_to_map(start_pos))
+	var end_id = vector3i_to_id(grid_map.local_to_map(end_pos))
+	var path = astar.get_point_path(start_id, end_id)
+	print("Path Pt 2: ")
+	print(path)
+	if path.size() > 1:
+		path.remove_at(path.size() - 1)  # Remove the last point
+		print("Path found after removing last point.")
+		return(path)
+	else:
+		print("No path found between the specified points.")
+		return PackedVector3Array()
+
+
 func move_sprite_along_path(path: PackedVector3Array):
 	var tween = get_tree().create_tween()
 	var movechar = get_node("../../../Combatants/Player Combatant Group/" + LevelBus.unit_key + "/Controllers/Animation Controller/" + LevelBus.selected_unit)
@@ -79,6 +99,46 @@ func move_sprite_along_path(path: PackedVector3Array):
 			tween = tween.chain()
 	tween.play()
 	
+func move_ai_unit_along_path(path: PackedVector3Array, enemy_name: String, unit_name: String):
+	# Check if the path is not empty and unit_name is valid
+	print("Nammes")
+	print(unit_name)
+	print(enemy_name)
+	var duration_per_segment = 0.3 # Adjust based on how fast you want the sprite to move
+
+	# Access the Unit's AnimationController to get the Sprite3D
+	var animation_controller_path = "Combatants/Opponent Combatant Group/%s/Controllers/Animation Controller" % enemy_name
+	var animation_controller = get_node("../../..").get_node(animation_controller_path)
+	var btpath = "Combatants/Opponent Combatant Group/%s/Controllers/AI Controller/BTPlayer" % enemy_name
+	var bt = get_node("../../..").get_node(btpath)
+
+	# Check if the animation controller and Sprite3D node exist
+	if not animation_controller or not animation_controller.has_node(unit_name):
+		print("Animation Controller or Sprite3D does not exist for unit: ", unit_name)
+		return
+	# Get the actual Sprite3D to move
+	var sprite_to_move = animation_controller.get_node(unit_name)
+	print("Stm")
+	print(sprite_to_move)
+	# Create a tween to move the Sprite3D
+	var tween = get_tree().create_tween()
+	for i in range(path.size() - 1):
+		var from_position = path[i]
+		var to_position = path[i + 1]
+
+		# Adjust the to_position if necessary, based on how your game handles coordinates
+		var actual_to_position = to_position + Vector3(-.15, 1, -.15) # Adjust Y-axis as per your game's needs
+		var reg_to_position = to_position + Vector3(0, 0, 0)
+		print("We're Half-way thereee")
+		# Animate the sprite from its current position to the next one in the path
+		tween.tween_property(sprite_to_move, "position", Vector3(actual_to_position), duration_per_segment).set_trans(0).set_ease(2)
+		WorldState.update_unit_position(unit_name, reg_to_position, true)
+		bt.set_bb_pos_var(reg_to_position)
+		print(reg_to_position)
+		# If not the last segment, chain the next movement
+		if i < path.size() - 2:
+			tween.chain()
+	tween.play()
 
 
 	

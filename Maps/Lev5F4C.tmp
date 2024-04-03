@@ -20,7 +20,6 @@
 [ext_resource type="Script" path="res://Maps/Controllers.gd" id="11_ya05s"]
 [ext_resource type="Script" path="res://Maps/AI Controller.gd" id="12_oakmm"]
 [ext_resource type="Script" path="res://Maps/Unit1Player.gd" id="13_ki7ee"]
-[ext_resource type="BlackboardPlan" uid="uid://befbkeqm7t27y" path="res://ai/tasks/WolfBlackboard.tres" id="14_uptoo"]
 
 [sub_resource type="Environment" id="Environment_j0j4p"]
 ambient_light_source = 3
@@ -29,6 +28,23 @@ ambient_light_sky_contribution = 0.18
 tonemap_mode = 3
 
 [sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_7vqg8"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_3y2a8"]
+var/pathfinding_node_var/name = &"pathfinding_node_var"
+var/pathfinding_node_var/type = 22
+var/pathfinding_node_var/value = NodePath("Services/Navigation Service/Pathfinding")
+var/pathfinding_node_var/hint = 0
+var/pathfinding_node_var/hint_string = ""
+var/path_to_enemy/name = &"path_to_enemy"
+var/path_to_enemy/type = 28
+var/path_to_enemy/value = []
+var/path_to_enemy/hint = 0
+var/path_to_enemy/hint_string = ""
+var/current_position/name = &"current_position"
+var/current_position/type = 9
+var/current_position/value = Vector3(0, 0, 0)
+var/current_position/hint = 0
+var/current_position/hint_string = ""
 
 [node name="Level" type="Node"]
 
@@ -48,6 +64,7 @@ script = ExtResource("2_xw6a5")
 
 [node name="Camera3D" type="Camera3D" parent="Environment/Cameras"]
 transform = Transform3D(0.707107, -0.316613, 0.632263, 0, 0.894154, 0.447759, -0.707107, -0.316613, 0.632263, 8.73328, 6.19646, 8.63074)
+projection = 1
 fov = 50.0
 size = 7.0
 script = ExtResource("2_6rcn4")
@@ -159,8 +176,8 @@ script = ExtResource("12_oakmm")
 
 [node name="BTPlayer" type="BTPlayer" parent="Combatants/Opponent Combatant Group/Enemy 1/Controllers/AI Controller"]
 behavior_tree = ExtResource("10_emmpr")
-update_mode = 2
-blackboard_plan = ExtResource("14_uptoo")
+update_mode = 0
+blackboard_plan = SubResource("BlackboardPlan_3y2a8")
 script = ExtResource("13_ki7ee")
 
 [node name="Action Controller" type="Node" parent="Combatants/Opponent Combatant Group/Enemy 1/Controllers"]

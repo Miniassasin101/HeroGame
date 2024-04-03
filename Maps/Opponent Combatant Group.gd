@@ -7,6 +7,7 @@ func _ready():
 
 func start_turn():
 	print(self.name, " starts its turn.")
+	return
 
 func end_turn():
 	print("Enemy Turn Ended")

@@ -1,0 +1,67 @@
+[gd_resource type="BehaviorTree" load_steps=9 format=3 uid="uid://d3n17chf6pmom"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_60i7a"]
+var/pathfinding_node_var/name = &"pathfinding_node_var"
+var/pathfinding_node_var/type = 22
+var/pathfinding_node_var/value = NodePath("Services/Navigation Service/Pathfinding")
+var/pathfinding_node_var/hint = 0
+var/pathfinding_node_var/hint_string = ""
+var/path_to_enemy/name = &"path_to_enemy"
+var/path_to_enemy/type = 28
+var/path_to_enemy/value = []
+var/path_to_enemy/hint = 0
+var/path_to_enemy/hint_string = ""
+var/current_position/name = &"current_position"
+var/current_position/type = 9
+var/current_position/value = Vector3(0, 0, 0)
+var/current_position/hint = 0
+var/current_position/hint_string = ""
+
+[sub_resource type="GDScript" id="GDScript_lrte3"]
+script/source = "@tool
+extends BTSetVar
+
+@export var parameter1: Vector3
+@export var parameter2: StringName
+
+func _enter() -> void:
+	pass
+
+func _tick():
+	if has_var(current_position):
+		print(\"YO SAY HO\")
+
+"
+
+[sub_resource type="BTSetVar" id="BTSetVar_vj4fj"]
+variable = &"current_position"
+script = SubResource("GDScript_lrte3")
+parameter1 = null
+parameter2 = null
+
+[sub_resource type="BBVariant" id="BBVariant_5if5a"]
+type = 9
+value_source = 1
+variable = &""
+resource_name = "$\"\""
+
+[sub_resource type="BBNode" id="BBNode_yigew"]
+value_source = 1
+variable = &"pathfinding_node_var"
+resource_name = "$pathfinding_node_var"
+
+[sub_resource type="BTCallMethod" id="BTCallMethod_uiil6"]
+node = SubResource("BBNode_yigew")
+method = &"find_path_AI"
+result_var = &"path_to_enemy"
+args = Array[BBVariant]([SubResource("BBVariant_5if5a")])
+
+[sub_resource type="BTSequence" id="BTSequence_uk0qb"]
+children = [SubResource("BTSetVar_vj4fj"), SubResource("BTCallMethod_uiil6")]
+
+[sub_resource type="BTSelector" id="BTSelector_nanph"]
+children = [SubResource("BTSequence_uk0qb")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_60i7a")
+root_task = SubResource("BTSelector_nanph")

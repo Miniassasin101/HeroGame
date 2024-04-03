@@ -1,0 +1,132 @@
+[gd_resource type="BehaviorTree" load_steps=19 format=3 uid="uid://d3n17chf6pmom"]
+
+[ext_resource type="BBNode" uid="uid://0demvrghyqcn" path="res://ai/tasks/pathfinding_bb_node.tres" id="1_g0yeh"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_60i7a"]
+var/pathfinding_node_var/name = &"pathfinding_node_var"
+var/pathfinding_node_var/type = 22
+var/pathfinding_node_var/value = NodePath("Services/Navigation Service/Pathfinding")
+var/pathfinding_node_var/hint = 0
+var/pathfinding_node_var/hint_string = ""
+var/path_to_enemy/name = &"path_to_enemy"
+var/path_to_enemy/type = 36
+var/path_to_enemy/value = PackedVector3Array()
+var/path_to_enemy/hint = 0
+var/path_to_enemy/hint_string = ""
+var/current_position/name = &"current_position"
+var/current_position/type = 9
+var/current_position/value = Vector3(0, 0, 0)
+var/current_position/hint = 0
+var/current_position/hint_string = ""
+var/closest_name_position/name = &"closest_name_position"
+var/closest_name_position/type = 9
+var/closest_name_position/value = Vector3(0, 0, 0)
+var/closest_name_position/hint = 0
+var/closest_name_position/hint_string = ""
+var/test/name = &"test"
+var/test/type = 4
+var/test/value = ""
+var/test/hint = 0
+var/test/hint_string = ""
+var/unit_name/name = &"unit_name"
+var/unit_name/type = 4
+var/unit_name/value = ""
+var/unit_name/hint = 0
+var/unit_name/hint_string = ""
+var/enemy_node_number/name = &"enemy_node_number"
+var/enemy_node_number/type = 4
+var/enemy_node_number/value = ""
+var/enemy_node_number/hint = 0
+var/enemy_node_number/hint_string = ""
+
+[sub_resource type="BBNode" id="BBNode_pah0c"]
+saved_value = NodePath("Combatants/Opponent Combatant Group")
+resource_name = "Combatants/Opponent Combatant Group"
+
+[sub_resource type="BTCallMethod" id="BTCallMethod_51oq7"]
+node = SubResource("BBNode_pah0c")
+method = &"start_turn"
+result_var = &"test"
+
+[sub_resource type="BBVariant" id="BBVariant_5if5a"]
+type = 9
+value_source = 1
+variable = &"current_position"
+resource_name = "$current_position"
+
+[sub_resource type="BBNode" id="BBNode_yigew"]
+saved_value = NodePath("Combatants/Opponent Combatant Group/Enemy 1/Controllers/AI Controller")
+resource_name = "Combatants/Opponent Combatant Group/Enemy 1/Controllers/AI Controller"
+
+[sub_resource type="BTCallMethod" id="BTCallMethod_uiil6"]
+node = SubResource("BBNode_yigew")
+method = &"find_closest_player_position"
+result_var = &"closest_name_position"
+args = Array[BBVariant]([SubResource("BBVariant_5if5a")])
+custom_name = "Find Closest Player Position"
+
+[sub_resource type="BBVariant" id="BBVariant_qe4kr"]
+type = 9
+value_source = 1
+variable = &"current_position"
+resource_name = "$current_position"
+
+[sub_resource type="BBVariant" id="BBVariant_7uuc3"]
+type = 9
+value_source = 1
+variable = &"closest_name_position"
+resource_name = "$closest_name_position"
+
+[sub_resource type="BTCallMethod" id="BTCallMethod_o5wi0"]
+node = ExtResource("1_g0yeh")
+method = &"find_path_AI"
+result_var = &"path_to_enemy"
+args = Array[BBVariant]([SubResource("BBVariant_qe4kr"), SubResource("BBVariant_7uuc3")])
+custom_name = "Return Path To Position"
+
+[sub_resource type="BBVariant" id="BBVariant_65ypp"]
+type = 9
+value_source = 1
+variable = &"path_to_enemy"
+resource_name = "$path_to_enemy"
+
+[sub_resource type="BBVariant" id="BBVariant_b0xc3"]
+type = 4
+value_source = 1
+variable = &"enemy_node_number"
+resource_name = "$enemy_node_number"
+
+[sub_resource type="BBVariant" id="BBVariant_35tfm"]
+type = 4
+value_source = 1
+variable = &"unit_name"
+resource_name = "$unit_name"
+
+[sub_resource type="BTCallMethod" id="BTCallMethod_bupqa"]
+node = ExtResource("1_g0yeh")
+method = &"move_ai_unit_along_path"
+args = Array[BBVariant]([SubResource("BBVariant_65ypp"), SubResource("BBVariant_b0xc3"), SubResource("BBVariant_35tfm")])
+custom_name = "Move Unit Along Path"
+
+[sub_resource type="GDScript" id="GDScript_d2f8o"]
+script/source = "@tool
+extends BTConsolePrint
+
+func _tick(delta: float):
+	print(\"Testing 1TWO3\")
+	print(blackboard.get_var(\"path_to_enemy\"))
+
+"
+
+[sub_resource type="BTConsolePrint" id="BTConsolePrint_2cvlk"]
+script = SubResource("GDScript_d2f8o")
+
+[sub_resource type="BTSequence" id="BTSequence_uk0qb"]
+children = [SubResource("BTCallMethod_51oq7"), SubResource("BTCallMethod_uiil6"), SubResource("BTCallMethod_o5wi0"), SubResource("BTCallMethod_bupqa"), SubResource("BTConsolePrint_2cvlk")]
+
+[sub_resource type="BTSelector" id="BTSelector_nanph"]
+children = [SubResource("BTSequence_uk0qb")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_60i7a")
+root_task = SubResource("BTSelector_nanph")

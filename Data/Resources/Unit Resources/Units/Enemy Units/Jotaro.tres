@@ -1,40 +1,23 @@
-[gd_resource type="Resource" script_class="UnitStatsResource" load_steps=2 format=3 uid="uid://bvfucwnnbwi0q"]
+[gd_resource type="Resource" script_class="StatBlockResource" load_steps=2 format=3 uid="uid://d2oloe1j7mver"]
 
-[ext_resource type="Script" path="res://Data/Resources/Unit Resources/UnitStatsResource.gd" id="1_cly6i"]
+[ext_resource type="Script" path="res://Data/Resources/Unit Resources/StatBlockResource.gd" id="1_6ok0d"]
 
 [resource]
-script = ExtResource("1_cly6i")
-name = "Jotaro"
-title = ""
-level = 1
+script = ExtResource("1_6ok0d")
+name = ""
+rank = 1
 internal_level = 1
-experience = 0
-current_class = ""
+life = 2
+mind = 2
+spirit = 2
+nature = 2
+vigor = 12
+strength = 12
+technique = 12
+insight = 12
+will = 12
+conviction = 12
 hp = 15
-current_hp = 15
-mana = 5
-build = 3
+current_hp = null
+ap = 3
 movement = 3
-strength = 5
-magic = 5
-dexterity = 5
-skill = 12
-speed = 11
-luck = 12
-defense = 8
-resistance = 5
-rating = 0
-might = 13
-hit = 21
-critical = 1
-physical_attack = 21
-magic_attack = 25
-avoidance = 21
-critical_chance = 2
-dodge = 21
-range = 1
-hit_chance = 34
-equipped_items = Array[String]([])
-known_skills = Array[String]([])
-equipped_skills = Array[String]([])
-actions = Array[Resource("res://Data/Resources/Action Resources/ActionResource.gd")]([])

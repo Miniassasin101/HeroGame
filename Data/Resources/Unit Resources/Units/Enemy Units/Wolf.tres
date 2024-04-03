@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="StatBlockResource" load_steps=2 format=3 uid="uid://dqkfd4ywbg6sd"]
+
+[ext_resource type="Script" path="res://Data/Resources/Unit Resources/StatBlockResource.gd" id="1_atx5s"]
+
+[resource]
+script = ExtResource("1_atx5s")
+name = ""
+rank = 1
+internal_level = 1
+life = 2
+mind = 2
+spirit = 2
+nature = 2
+vigor = 12
+strength = 12
+technique = 12
+insight = 12
+will = 12
+conviction = 12
+hp = 15
+current_hp = null
+ap = 3
+movement = 3

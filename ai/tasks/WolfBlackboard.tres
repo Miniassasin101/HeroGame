@@ -1,0 +1,18 @@
+[gd_resource type="BlackboardPlan" format=3 uid="uid://befbkeqm7t27y"]
+
+[resource]
+var/pathfinding_node_var/name = &"pathfinding_node_var"
+var/pathfinding_node_var/type = 22
+var/pathfinding_node_var/value = NodePath("Services/Navigation Service/Pathfinding")
+var/pathfinding_node_var/hint = 0
+var/pathfinding_node_var/hint_string = ""
+var/path_to_enemy/name = &"path_to_enemy"
+var/path_to_enemy/type = 28
+var/path_to_enemy/value = []
+var/path_to_enemy/hint = 0
+var/path_to_enemy/hint_string = ""
+var/current_position/name = &"current_position"
+var/current_position/type = 9
+var/current_position/value = Vector3(0, 0, 0)
+var/current_position/hint = 0
+var/current_position/hint_string = ""
