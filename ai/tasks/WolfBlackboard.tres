@@ -1,4 +1,6 @@
-[gd_resource type="BlackboardPlan" format=3 uid="uid://befbkeqm7t27y"]
+[gd_resource type="BlackboardPlan" load_steps=2 format=3 uid="uid://befbkeqm7t27y"]
+
+[sub_resource type="Resource" id="Resource_kmxge"]
 
 [resource]
 var/pathfinding_node_var/name = &"pathfinding_node_var"
@@ -7,8 +9,8 @@ var/pathfinding_node_var/value = NodePath("Services/Navigation Service/Pathfindi
 var/pathfinding_node_var/hint = 0
 var/pathfinding_node_var/hint_string = ""
 var/path_to_enemy/name = &"path_to_enemy"
-var/path_to_enemy/type = 28
-var/path_to_enemy/value = []
+var/path_to_enemy/type = 36
+var/path_to_enemy/value = PackedVector3Array()
 var/path_to_enemy/hint = 0
 var/path_to_enemy/hint_string = ""
 var/current_position/name = &"current_position"
@@ -16,3 +18,38 @@ var/current_position/type = 9
 var/current_position/value = Vector3(0, 0, 0)
 var/current_position/hint = 0
 var/current_position/hint_string = ""
+var/closest_name_position/name = &"closest_name_position"
+var/closest_name_position/type = 9
+var/closest_name_position/value = Vector3(0, 0, 0)
+var/closest_name_position/hint = 0
+var/closest_name_position/hint_string = ""
+var/test/name = &"test"
+var/test/type = 4
+var/test/value = ""
+var/test/hint = 0
+var/test/hint_string = ""
+var/unit_name/name = &"unit_name"
+var/unit_name/type = 4
+var/unit_name/value = ""
+var/unit_name/hint = 0
+var/unit_name/hint_string = ""
+var/enemy_node_number/name = &"enemy_node_number"
+var/enemy_node_number/type = 4
+var/enemy_node_number/value = ""
+var/enemy_node_number/hint = 0
+var/enemy_node_number/hint_string = ""
+var/path_length_var/name = &"path_length_var"
+var/path_length_var/type = 2
+var/path_length_var/value = 0
+var/path_length_var/hint = 0
+var/path_length_var/hint_string = ""
+var/unit_stat_sheet/name = &"unit_stat_sheet"
+var/unit_stat_sheet/type = 24
+var/unit_stat_sheet/value = SubResource("Resource_kmxge")
+var/unit_stat_sheet/hint = 0
+var/unit_stat_sheet/hint_string = ""
+var/unit_ap_var/name = &"unit_ap_var"
+var/unit_ap_var/type = 2
+var/unit_ap_var/value = 3
+var/unit_ap_var/hint = 0
+var/unit_ap_var/hint_string = ""

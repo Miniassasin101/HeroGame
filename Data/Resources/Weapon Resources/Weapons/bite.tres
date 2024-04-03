@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WeaponStatsResource" load_steps=2 format=3 uid="uid://dbyug0rev0i5x"]
+
+[ext_resource type="Script" path="res://Data/Resources/Weapon Resources/WeaponStatsResource.gd" id="1_rnt3a"]
+
+[resource]
+script = ExtResource("1_rnt3a")
+name = "Wolf Bite"
+damage_dice = "1d8"
+damage_type = "P"
+range = 1
+reload_actions = 0
+hands_required = "1"
+weapon_group = "Natural"
+weapon_traits = Array[String]([])
+ammunition_type = ""
+magical_properties = {}

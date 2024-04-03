@@ -16,6 +16,7 @@ var astar = AStar3D.new()
 func _ready():
 	#connect points
 	LevelBus.connect("mousepos", Callable(self, "_movement_var_collecter"))
+	LevelBus.connect("update", Callable(self, "update_astar_based_on_units"))
 	# Initialize AStar with GridMap cells
 	initialize_astar_from_gridmap()
 	#Connect GridMap cells to create paths
@@ -78,7 +79,7 @@ func find_path_AI(start_pos: Vector3, end_pos: Vector3):
 		return(path)
 	else:
 		print("No path found between the specified points.")
-		return PackedVector3Array()
+		return ("false")
 
 
 func move_sprite_along_path(path: PackedVector3Array):
@@ -139,6 +140,7 @@ func move_ai_unit_along_path(path: PackedVector3Array, enemy_name: String, unit_
 		if i < path.size() - 2:
 			tween.chain()
 	tween.play()
+	update_astar_based_on_units()
 
 
 	
@@ -224,8 +226,8 @@ func update_astar_based_on_units():
 		astar.set_point_disabled(point_id, false)
 
 	# Retrieve the current turn from WorldState
-	var current_turn = WorldState.current_turn
-	var blocked_positions = WorldState.enemy_positions if current_turn == "player" else WorldState.player_positions
+	var current_turn = LevelBus.turn
+	var blocked_positions = WorldState.enemy_positions# if current_turn == "player" else WorldState.blank_dictionary
 
 
 	# Disable points where blocked units are located

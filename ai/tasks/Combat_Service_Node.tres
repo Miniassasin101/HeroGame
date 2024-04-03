@@ -1,0 +1,5 @@
+[gd_resource type="BBNode" format=3 uid="uid://dujdt7v7os4vs"]
+
+[resource]
+saved_value = NodePath("Services/Combat Service")
+resource_name = "Services/Combat Service"

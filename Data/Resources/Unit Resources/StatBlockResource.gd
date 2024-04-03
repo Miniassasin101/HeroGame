@@ -26,7 +26,7 @@ class_name StatBlockResource
 @export var current_hp: int = hp
 @export var ap: int = 3
 @export var movement: int = 3
-
+@export var equipped_weapon: WeaponStatsResource
 func _init():
 	calculate_derived_stats()
 

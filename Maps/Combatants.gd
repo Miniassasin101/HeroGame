@@ -18,6 +18,10 @@ func _ready():
 func _on_group_turn_finished():
 	print(groups[current_group_index].name, " finished its turn.")
 		# Reset AP for all characters in the current group
+	if current_group_index == 0:
+		LevelBus.turn = "enemy"
+	else :
+		LevelBus.turn = "player"
 
 	# Move to the next group
 	current_group_index += 1
@@ -30,9 +34,17 @@ func _on_group_turn_finished():
 			# Assuming reset_ap() is a method within each character's stats resource or similar object
 			character.reset_ap()
 			print(character.name + "'s AP has been reset.")
+		#for enemy_key in WorldState.enemy_roster.keys():
+			#var character =
 	# Start the next group's turn
 	var current_test_enemy = $"Opponent Combatant Group/Enemy 1/Controllers/AI Controller/BTPlayer"
 
 	#if current_group_index == 1:
 	#	current_test_enemy.update()
+	
+	LevelBus.updater()
 	groups[current_group_index].start_turn()
+
+func target_query(pos):
+	var target_name = WorldState.get_player_name_by_position(pos)
+	return target_name

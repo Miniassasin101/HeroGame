@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="StatBlockResource" load_steps=2 format=3 uid="uid://dqkfd4ywbg6sd"]
+[gd_resource type="Resource" script_class="StatBlockResource" load_steps=3 format=3 uid="uid://dqkfd4ywbg6sd"]
 
 [ext_resource type="Script" path="res://Data/Resources/Unit Resources/StatBlockResource.gd" id="1_atx5s"]
+[ext_resource type="Resource" uid="uid://dbyug0rev0i5x" path="res://Data/Resources/Weapon Resources/Weapons/bite.tres" id="1_qkmmy"]
 
 [resource]
 script = ExtResource("1_atx5s")
-name = ""
+name = "Wolf"
 rank = 1
 internal_level = 1
 life = 2
@@ -21,3 +22,4 @@ hp = 15
 current_hp = null
 ap = 3
 movement = 3
+equipped_weapon = ExtResource("1_qkmmy")

@@ -11,6 +11,7 @@ signal move_button()
 
 signal attack_button()
 
+signal update()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -21,6 +22,11 @@ func mousesave(adjint):
 	print ("Adjint in bus")
 	print (adjint)
 	emit_signal("mousepos", adjint)
+	
+func updater():
+	print("Updating impassable spaces")
+	emit_signal("update")
+
 	
 func _attack_button():
 	print ("Attack Button In Bus")

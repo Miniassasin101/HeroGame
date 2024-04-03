@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dj4auo5l5jt6j"]
+[gd_scene load_steps=23 format=3 uid="uid://dj4auo5l5jt6j"]
 
 [ext_resource type="Script" path="res://Maps/Pathfinding.gd" id="1_mi66x"]
 [ext_resource type="Script" path="res://Maps/Level Prototyping/Map/Camera3D.gd" id="2_6rcn4"]
@@ -12,7 +12,6 @@
 [ext_resource type="Script" path="res://Maps/Action List.gd" id="7_pq5e4"]
 [ext_resource type="Script" path="res://Maps/Enemy Animation Controller.gd" id="8_o3i0j"]
 [ext_resource type="Script" path="res://Maps/Opponent Combatant Group.gd" id="9_8pebe"]
-[ext_resource type="Script" path="res://Maps/Enemy Animation Controller2.gd" id="9_vy6cx"]
 [ext_resource type="Texture2D" uid="uid://b8aprihdkm6p7" path="res://Background Art/Character Sprites (Dialogue)/sicon 64 mov.png" id="10_2utg3"]
 [ext_resource type="BehaviorTree" uid="uid://d3n17chf6pmom" path="res://ai/tasks/WolfBehaviorTest.tres" id="10_emmpr"]
 [ext_resource type="Script" path="res://Maps/Enemy 1.gd" id="10_stbhp"]
@@ -48,8 +47,9 @@ script = ExtResource("2_xw6a5")
 
 [node name="Camera3D" type="Camera3D" parent="Environment/Cameras"]
 transform = Transform3D(0.707107, -0.316613, 0.632263, 0, 0.894154, 0.447759, -0.707107, -0.316613, 0.632263, 8.73328, 6.19646, 8.63074)
+projection = 1
 fov = 50.0
-size = 7.0
+size = 8.0
 script = ExtResource("2_6rcn4")
 
 [node name="Tilemaps" type="Node" parent="Environment"]
@@ -175,19 +175,28 @@ script = ExtResource("8_o3i0j")
 [node name="Movement Override" type="Node" parent="Combatants/Opponent Combatant Group/Enemy 1/Action Overrides"]
 
 [node name="Enemy 2" type="Node" parent="Combatants/Opponent Combatant Group"]
+script = ExtResource("10_stbhp")
 
 [node name="Art" type="Node" parent="Combatants/Opponent Combatant Group/Enemy 2"]
 
 [node name="Controllers" type="Node" parent="Combatants/Opponent Combatant Group/Enemy 2"]
+script = ExtResource("11_ya05s")
 
 [node name="AI Controller" type="Node" parent="Combatants/Opponent Combatant Group/Enemy 2/Controllers"]
+script = ExtResource("12_oakmm")
+
+[node name="BTPlayer" type="BTPlayer" parent="Combatants/Opponent Combatant Group/Enemy 2/Controllers/AI Controller"]
+behavior_tree = ExtResource("10_emmpr")
+update_mode = 2
+blackboard_plan = ExtResource("14_uptoo")
+script = ExtResource("13_ki7ee")
 
 [node name="Action Controller" type="Node" parent="Combatants/Opponent Combatant Group/Enemy 2/Controllers"]
 
 [node name="Stats Controller" type="Node" parent="Combatants/Opponent Combatant Group/Enemy 2/Controllers"]
 
 [node name="Animation Controller" type="Node" parent="Combatants/Opponent Combatant Group/Enemy 2/Controllers"]
-script = ExtResource("9_vy6cx")
+script = ExtResource("8_o3i0j")
 
 [node name="Action Overrides" type="Node" parent="Combatants/Opponent Combatant Group/Enemy 2"]
 

@@ -13,21 +13,38 @@ var current_turn = "player" # "player" or "enemy"
 var player_positions := {}
 var enemy_positions := {}
 var enemy_roster := {}
-
-
+var blank_dictionary := {}
+var enemy_count = {}  # A dictionary to keep track of the number of each type of enemy
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
 func add_enemy_to_roster(name: String):
-	var path = "res://Data/Resources/Unit Resources/Units/Enemy Units/" + name + ".tres"
+	# Extract base name without numeric suffix
+	var base_name = get_base_type(name) # Custom method to implement, see below
+	var path = "res://Data/Resources/Unit Resources/Units/Enemy Units/" + base_name + ".tres"
 	var enemy_resource: StatBlockResource = load(path)
+	print("Enemy Resource Check")
+	print(enemy_resource)
 	if enemy_resource:
 		enemy_roster[name] = enemy_resource
 		#emit_signal("character_updated", name)
 		#emit_signal("roster_updated")
 	else:
 		push_error("Failed to load character: %s" % path)
+		
+# Custom method to extract base type name from a string like "Wolf 1"
+func get_base_type(name: String) -> String:
+	var parts = name.split(" ")
+	if parts.size() > 1:
+		var last_part = parts[parts.size() - 1]
+		if last_part.is_valid_int():  # Check if the last part is a valid integer
+			parts.remove_at(parts.size() - 1)  # Remove the last element if it's a number
+			return " ".join(parts)  # Join the list back into a string without the number
+	return name
+
+
+
 
 
 func _input(event):
@@ -61,6 +78,13 @@ func get_enemy_name_by_position(search_position: Vector3) -> String:
 			return name  # Return the name of the enemy
 	return ""  # Return an empty string if no enemy is found at that position
 
+# Method to find a player's name based on position
+func get_player_name_by_position(search_position: Vector3) -> String:
+	for name in player_positions:
+		# Check if the positions match
+		if player_positions[name] == search_position:
+			return name  # Return the name of the player unit
+	return ""  # Return an empty string if no enemy is found at that position
 
 func switch_turn():
 	current_turn = "enemy" if current_turn == "player" else "player"

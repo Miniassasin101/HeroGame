@@ -14,7 +14,7 @@ func _ready():
 	LevelBus.connect("attack_button", Callable(self, "_target_selection"))
 
 # Function to select a target based on your criteria (e.g., closest enemy, lowest health)
-func perform_attack(attacker: UnitStatsResource, defender: UnitStatsResource):
+func perform_attack(attacker: UnitStatsResource, defender: StatBlockResource):
 	if attacker.ap < 1:
 		print(attacker.name + " does not have enough action points to attack.")
 		return
@@ -97,14 +97,14 @@ func battle_forecast(target_name):
 
 
 
-func calculate_hit_chance(attacker: UnitStatsResource, defender: UnitStatsResource) -> int:
+func calculate_hit_chance(attacker, defender) -> int:
 	# Example calculation, should be adjusted based on your game's rules
 	var attacker_accuracy = attacker.technique + calculate_modifier(attacker.mind)
 	var defender_evasion = defender.movement + calculate_modifier(defender.mind)
 	return max(0, attacker_accuracy - defender_evasion + 50) # Base 50% chance modified by stats
 
 
-func calculate_damage(attacker: UnitStatsResource, defender: UnitStatsResource) -> int:
+func calculate_damage(attacker, defender) -> int:
 	# Use the equipped weapon's damage dice and attacker's strength for damage calculation
 	if attacker.equipped_weapon:
 		var weapon = attacker.equipped_weapon
@@ -147,7 +147,7 @@ func calculate_modifier(stat_value: int) -> int:
 	
 
 # New method to calculate combat forecast
-func calculate_combat_forecast(attacker: UnitStatsResource, defender: UnitStatsResource) -> Dictionary:
+func calculate_combat_forecast(attacker: UnitStatsResource, defender: StatBlockResource) -> Dictionary:
 	var forecast = {
 		"attacker_name": attacker.name,
 		"defender_name": defender.name,
@@ -167,8 +167,13 @@ func calculate_combat_forecast(attacker: UnitStatsResource, defender: UnitStatsR
 	#	forecast.defender_expected_counter_damage = calculate_expected_damage(defender, attacker)
 	
 	return forecast
+func ai_execute_combat_converter(attacker, player_name):
+	var defending_player = UnitBus.character_roster[player_name]
+	execute_combat(attacker, defending_player)
+	print("AI Combat Activated")
 
-func execute_combat(attacker: UnitStatsResource, defender: UnitStatsResource):
+
+func execute_combat(attacker, defender):
 	
 	if attacker.ap < 1:
 		print(attacker.name + " does not have enough action points to attack.")
@@ -203,7 +208,7 @@ func execute_combat(attacker: UnitStatsResource, defender: UnitStatsResource):
 		print(attacker.name + "'s attack missed " + defender.name + ".")
 
 
-func calculate_expected_damage(attacker: UnitStatsResource, defender: UnitStatsResource) -> Dictionary:
+func calculate_expected_damage(attacker: UnitStatsResource, defender: StatBlockResource) -> Dictionary:
 	# Simplified expected damage calculation
 	var damage_range = []
 	if attacker.equipped_weapon:

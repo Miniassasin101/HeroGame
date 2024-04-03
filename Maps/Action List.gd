@@ -97,7 +97,7 @@ func _on_move_button_pressed():
 		# Consume 1 AP for the attack
 	print("Attack AP Cost Commencing")
 	moving_unit.ap -= 1
-	if LevelBus.turn == "player":
+	if LevelBus.turn:# == "player":
 		LevelBus.menu_toggle1 = "move"
 		print("in move mode and selected unit is: " + LevelBus.selected_unit)
 		LevelBus._move_button()
