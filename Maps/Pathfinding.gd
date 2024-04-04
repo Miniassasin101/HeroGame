@@ -62,14 +62,17 @@ func find_path_and_move_sprite(start_pos: Vector3, end_pos: Vector3):
 	else:
 		print("No path found between the specified points.")
 
+#Method for handling Ai
 func find_path_AI(start_pos: Vector3, end_pos: Vector3):
-	update_astar_based_on_units()
+	update_astar_based_on_units()# Make sure the AStar3D map is updated before finding a path
 	print("work work Angelica")
 	print(start_pos)
 	print(end_pos)
 
 	var start_id = vector3i_to_id(grid_map.local_to_map(start_pos))
 	var end_id = vector3i_to_id(grid_map.local_to_map(end_pos))
+	if astar.is_point_disabled(end_id):
+		return "false"
 	var path = astar.get_point_path(start_id, end_id)
 	print("Path Pt 2: ")
 	print(path)
@@ -81,25 +84,6 @@ func find_path_AI(start_pos: Vector3, end_pos: Vector3):
 		print("No path found between the specified points.")
 		return ("false")
 
-
-func move_sprite_along_path(path: PackedVector3Array):
-	var tween = get_tree().create_tween()
-	var movechar = get_node("../../../Combatants/Player Combatant Group/" + LevelBus.unit_key + "/Controllers/Animation Controller/" + LevelBus.selected_unit)
-	var duration_per_segment = 0.3 # Adjust based on how fast you want the sprite to move
-	for i in range(path.size() - 1):
-		var to_position = path[i + 1]
-		print("To Position:")
-		print(to_position)
-		var actualmov = to_position + Vector3(-.15, 1, -.15)
-		print("Actual Move:")
-		print(actualmov)
-		var updatepos = to_position + Vector3(0, 1, 0)
-		WorldState.update_unit_position(LevelBus.selected_unit, updatepos)
-		tween.tween_property(movechar, "position", Vector3(actualmov), duration_per_segment).set_trans(0).set_ease(2)
-		if i < path.size() - 2: # Chain all but the last segment
-			tween = tween.chain()
-	tween.play()
-	
 func move_ai_unit_along_path(path: PackedVector3Array, enemy_name: String, unit_name: String):
 	# Check if the path is not empty and unit_name is valid
 	print("Nammes")
@@ -141,6 +125,27 @@ func move_ai_unit_along_path(path: PackedVector3Array, enemy_name: String, unit_
 			tween.chain()
 	tween.play()
 	update_astar_based_on_units()
+
+
+
+func move_sprite_along_path(path: PackedVector3Array):
+	var tween = get_tree().create_tween()
+	var movechar = get_node("../../../Combatants/Player Combatant Group/" + LevelBus.unit_key + "/Controllers/Animation Controller/" + LevelBus.selected_unit)
+	var duration_per_segment = 0.3 # Adjust based on how fast you want the sprite to move
+	for i in range(path.size() - 1):
+		var to_position = path[i + 1]
+		print("To Position:")
+		print(to_position)
+		var actualmov = to_position + Vector3(-.15, 1, -.15)
+		print("Actual Move:")
+		print(actualmov)
+		var updatepos = to_position + Vector3(0, 1, 0)
+		WorldState.update_unit_position(LevelBus.selected_unit, updatepos)
+		tween.tween_property(movechar, "position", Vector3(actualmov), duration_per_segment).set_trans(0).set_ease(2)
+		if i < path.size() - 2: # Chain all but the last segment
+			tween = tween.chain()
+	tween.play()
+	
 
 
 	
@@ -226,14 +231,21 @@ func update_astar_based_on_units():
 		astar.set_point_disabled(point_id, false)
 
 	# Retrieve the current turn from WorldState
-	var current_turn = LevelBus.turn
-	var blocked_positions = WorldState.enemy_positions# if current_turn == "player" else WorldState.blank_dictionary
+	#var current_turn = LevelBus.turn
+	#var blocked_positions = WorldState.enemy_positions# if current_turn == "player" else WorldState.blank_dictionary
+	var all_positions = WorldState.enemy_positions.duplicate()
+	#all_positions.update(WorldState.player_positions)
 
-
-	# Disable points where blocked units are located
-	for key in blocked_positions.keys():
-		var pos = blocked_positions[key]
-		var grid_pos = grid_map.local_to_map(pos)  # Assuming pos is in world coordinates
+	for key in all_positions.keys():
+		var pos = all_positions[key]
+		var grid_pos = grid_map.local_to_map(pos)
 		var point_id = vector3i_to_id(grid_pos)
 		if astar.has_point(point_id):
 			astar.set_point_disabled(point_id, true)
+	# Disable points where blocked units are located
+	#for key in blocked_positions.keys():
+	#	var pos = blocked_positions[key]
+	#	var grid_pos = grid_map.local_to_map(pos)  # Assuming pos is in world coordinates
+	#	var point_id = vector3i_to_id(grid_pos)
+	#	if astar.has_point(point_id):
+	#		astar.set_point_disabled(point_id, true)

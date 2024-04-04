@@ -81,6 +81,8 @@ func handle_target_selected(target_name):
 	battle_forecast(target_name)
 
 func battle_forecast(target_name):
+	print("Battle Forecast Activating")
+	print(target_name)
 	LevelBus.selected_target = target_name
 	var attacker_stats = UnitBus.character_roster[LevelBus.selected_unit]
 	var defender_stats = WorldState.enemy_roster[target_name]

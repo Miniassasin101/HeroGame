@@ -20,6 +20,7 @@ func _ready():
 	pass # Replace with function body.
 
 func add_enemy_to_roster(name: String):
+	print("Add Ennemy To Roster %s" %name)
 	# Extract base name without numeric suffix
 	var base_name = get_base_type(name) # Custom method to implement, see below
 	var path = "res://Data/Resources/Unit Resources/Units/Enemy Units/" + base_name + ".tres"
@@ -27,7 +28,9 @@ func add_enemy_to_roster(name: String):
 	print("Enemy Resource Check")
 	print(enemy_resource)
 	if enemy_resource:
-		enemy_roster[name] = enemy_resource
+		# Duplicate the resource to create a unique copy for this enemy
+		var unique_enemy_resource: StatBlockResource = enemy_resource.duplicate()
+		enemy_roster[name] = unique_enemy_resource
 		#emit_signal("character_updated", name)
 		#emit_signal("roster_updated")
 	else:

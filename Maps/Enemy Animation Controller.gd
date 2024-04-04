@@ -17,7 +17,8 @@ func _ready():
 		print("Failed to load texture at path: " + texture_path)
 	sprite_3d.set_billboard_mode(1)
 	var ranx = randi_range(2, 6) 
-	var startpos = Vector3(ranx + 0.5, 1, 3.5)
+	var rany = randi_range(2, 6)
+	var startpos = Vector3(ranx + 0.5, 1, rany + 0.5)
 	var updpos = startpos# + Vector3(-0.25, 0, -0.25)
 	sprite_3d.set_position(startpos)
 	#Reminder: add logic later to set the name of the node equal to the character's name
