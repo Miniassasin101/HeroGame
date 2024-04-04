@@ -7,6 +7,8 @@ class_name StatBlockResource
 @export var rank: int = 1
 @export var internal_level: int = 1
 
+# Actions
+@export var actions: Array = []
 # Base Core Stats
 @export var life: int = 2
 @export var mind: int = 2
@@ -33,7 +35,22 @@ func _init():
 func calculate_modifier(stat_value: int) -> int:
 	return floor((stat_value - 10) / 2.0)
 
+func add_action(action: ActionResource):
+	actions.append(action)
 
+func remove_action(action: ActionResource):
+	actions.erase(action)
+
+func execute_action(action_index: int, target: Vector3):
+	if action_index >= 0 and action_index < actions.size():
+		var action = actions[action_index]
+		if ap >= action.ap_cost: # Check if there's enough AP
+			action.execute_action(self, target)
+			ap -= action.ap_cost
+		else:
+			print("Not enough AP to execute action.")
+	else:
+		print("Invalid action index.")
 
 func calculate_derived_stats():
 	# Updating derived stats based on core stats and their modifiers
