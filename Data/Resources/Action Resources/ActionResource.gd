@@ -3,10 +3,11 @@
 extends Resource
 class_name ActionResource
 
-@export var name: String = "Unnamed Action"
-@export var description: String = "No Description"
-@export var action_cost: int = 0
+@export var action_name: String = "Unnamed Action"
+@export var ap_cost: int = 1
+@export var range: int = 1
+# Additional properties as needed, e.g., effects, targeting logic, etc.
 
-func perform_action(target, performer):
-	# Placeholder for action logic
+func execute_action(caster: StatBlockResource, target: Vector3):
+	# Implementation of the action's effects
 	pass

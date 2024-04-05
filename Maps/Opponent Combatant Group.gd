@@ -9,6 +9,15 @@ func start_turn():
 	print(self.name, " starts its turn.")
 	return
 
+func turn_start():
+	for child in get_children():
+		# Check if the child has a method named 'begin'
+		if child.has_method("begin"):
+			# Call the 'begin' method on the child
+			child.call("begin")
+			print("Begin Called")
+
+
 func end_turn():
 	print("Enemy Turn Ended")
 	emit_signal("turn_finished")

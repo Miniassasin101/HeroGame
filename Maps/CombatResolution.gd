@@ -12,6 +12,8 @@ signal combat_ended(winner)
 
 func _ready():
 	LevelBus.connect("attack_button", Callable(self, "_target_selection"))
+	Planning.contest()
+	WorldState.contestie()
 
 # Function to select a target based on your criteria (e.g., closest enemy, lowest health)
 func perform_attack(attacker: UnitStatsResource, defender: StatBlockResource):

@@ -48,14 +48,12 @@ func _movement_var_collecter(mpos):
 
 func find_path_and_move_sprite(start_pos: Vector3, end_pos: Vector3):
 	update_astar_based_on_units()
-	#print(start_pos)
-	#print(end_pos)
+	print("Finding path for sprite from: ", start_pos, " to ", end_pos)
 	LevelBus.menu_toggle1 = "wait"
 	var start_id = vector3i_to_id(grid_map.local_to_map(start_pos))
 	var end_id = vector3i_to_id(grid_map.local_to_map(end_pos))
 	var path = astar.get_point_path(start_id, end_id)
-	print("Path Pt 2: ")
-	print(path)
+	print("Path Pt 2P: ", path)
 	if path.size() > 0:
 		print("Path found. Moving " + LevelBus.selected_unit + ".")
 		move_sprite_along_path(path)
@@ -63,26 +61,54 @@ func find_path_and_move_sprite(start_pos: Vector3, end_pos: Vector3):
 		print("No path found between the specified points.")
 
 #Method for handling Ai
-func find_path_AI(start_pos: Vector3, end_pos: Vector3):
+func find_path_AI(start_pos: Vector3, end_pos: Vector3, unit: StatBlockResource):
 	update_astar_based_on_units()# Make sure the AStar3D map is updated before finding a path
 	print("work work Angelica")
-	print(start_pos)
-	print(end_pos)
+	print("Start Position: ", start_pos)
+	print("End Position: ", end_pos)
+	var my_array = PackedVector3Array([Vector3(0, 0, 0)])
+
+	var enemypos = Planning.snapshot_enemy_positions
+	print("Enemy Positions at Update Time: ", enemypos)
 
 	var start_id = vector3i_to_id(grid_map.local_to_map(start_pos))
 	var end_id = vector3i_to_id(grid_map.local_to_map(end_pos))
 	if astar.is_point_disabled(end_id):
-		return "false"
+		print("End position is disabled.")
+		return my_array
 	var path = astar.get_point_path(start_id, end_id)
-	print("Path Pt 2: ")
-	print(path)
+	print("Initial Path Pt 2AI: ", path)
 	if path.size() > 1:
 		path.remove_at(path.size() - 1)  # Remove the last point
-		print("Path found after removing last point.")
-		return(path)
+		# Ensure the path does not exceed the unit's movement capability
+		var movement_limit = min(path.size(), unit.movement + 1)  # +1 because we start counting from the current position which does not require movement
+		path = path.slice(0, movement_limit)
+		print("Move Lim Path: ")
+		print(path)
+		while path.size() > 0:
+			var last_position = path[path.size() - 1]
+			var is_safe_position = true
+			for enemy in enemypos.values():
+				print("Enemy in posvalues")
+				if last_position == enemy:
+					is_safe_position = false
+					break
+			if is_safe_position:
+				break
+			else:
+				path.remove_at(path.size() - 1)
+		print("Path After Slice:")
+		print(path)
+
+		if path.size() > 1:
+			print("Path found after removing last point and adjusting to mov and occupancy.")
+			return(path)
+		else:
+			print("Unit Has No Mov")
+			return my_array
 	else:
 		print("No path found between the specified points.")
-		return ("false")
+		return my_array
 
 func move_ai_unit_along_path(path: PackedVector3Array, enemy_name: String, unit_name: String):
 	# Check if the path is not empty and unit_name is valid
@@ -146,9 +172,24 @@ func move_sprite_along_path(path: PackedVector3Array):
 			tween = tween.chain()
 	tween.play()
 	
+func get_last_element(array: PackedVector3Array) -> Vector3:
+	if array.size() > 0:
+		return array[array.size() - 1]
+	return Vector3.ZERO  # or however you want to handle an empty array
 
+# Find tiles a unit can move to based on its current position and movement AP.
+func get_reachable_tiles(unit_position: Vector3, unit: StatBlockResource) -> Array:
+	var reachable_tiles = []
+	var movement_range = unit.movement # Assuming 1 AP allows moving to 1 tile for simplicity
 
-	
+	# Use astar to find reachable tiles. This is a simplified placeholder logic.
+	for point_id in astar.get_point_ids():
+		var point_pos = astar.get_point_position(point_id)
+		var distance = unit_position.distance_to(point_pos)
+		if distance <= movement_range:
+			reachable_tiles.append(point_pos)
+
+	return reachable_tiles
 
 
 func _on_tween_completed(tween, key):

@@ -3,7 +3,7 @@ extends Node
 
 var current_group_index = 0
 var groups = []
-
+@onready var oppgroup = get_child(1)
 func _ready():
 	# Initialize the groups array with child nodes, assuming each child is a group
 	groups = get_children()
@@ -22,6 +22,7 @@ func _on_group_turn_finished():
 		LevelBus.turn = "enemy"
 	else :
 		LevelBus.turn = "player"
+	WorldState.send_state_to_plan_state()
 
 	# Move to the next group
 	current_group_index += 1
@@ -34,6 +35,7 @@ func _on_group_turn_finished():
 			# Assuming reset_ap() is a method within each character's stats resource or similar object
 			character.reset_ap()
 			print(character.name + "'s AP has been reset.")
+			WorldState.send_state_to_plan_state()
 		#for enemy_key in WorldState.enemy_roster.keys():
 			#var character =
 	# Start the next group's turn
@@ -41,6 +43,7 @@ func _on_group_turn_finished():
 
 	#if current_group_index == 1:
 	#	current_test_enemy.update()
+	oppgroup.turn_start()
 	
 	LevelBus.updater()
 	groups[current_group_index].start_turn()

@@ -32,7 +32,8 @@ func _input(event):
 		print("Pressed")
 		
 		update(0)
-
+func update_trigger():
+	update(0)
 
 
 func _process(delta):

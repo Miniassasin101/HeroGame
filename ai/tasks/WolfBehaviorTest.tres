@@ -1,7 +1,8 @@
-[gd_resource type="BehaviorTree" load_steps=43 format=3 uid="uid://d3n17chf6pmom"]
+[gd_resource type="BehaviorTree" load_steps=48 format=3 uid="uid://d3n17chf6pmom"]
 
 [ext_resource type="BBNode" uid="uid://0demvrghyqcn" path="res://ai/tasks/pathfinding_bb_node.tres" id="1_g0yeh"]
 [ext_resource type="Script" path="res://ai/tasks/CheckIfAtPath.gd" id="2_k5kwd"]
+[ext_resource type="Script" path="res://ai/tasks/QueueMove.gd" id="3_4471d"]
 [ext_resource type="BBNode" uid="uid://b3vrj2l2i2s81" path="res://ai/tasks/Combatants_Node.tres" id="3_k4mlt"]
 [ext_resource type="BBNode" uid="uid://dujdt7v7os4vs" path="res://ai/tasks/Combat_Service_Node.tres" id="4_20kd1"]
 
@@ -68,31 +69,21 @@ var/next_to_trigger_var/type = 1
 var/next_to_trigger_var/value = false
 var/next_to_trigger_var/hint = 0
 var/next_to_trigger_var/hint_string = ""
+var/target_position_vec3/name = &"target_position_vec3"
+var/target_position_vec3/type = 9
+var/target_position_vec3/value = Vector3(0, 0, 0)
+var/target_position_vec3/hint = 0
+var/target_position_vec3/hint_string = ""
 
 [sub_resource type="BBVariant" id="BBVariant_u8t6b"]
 type = 2
 saved_value = 0
+resource_name = "0"
 
 [sub_resource type="BTCheckVar" id="BTCheckVar_aa21y"]
 variable = &"unit_ap_var"
 check_type = 3
 value = SubResource("BBVariant_u8t6b")
-
-[sub_resource type="GDScript" id="GDScript_d2f8o"]
-script/source = "@tool
-extends BTConsolePrint
-
-func _tick(delta: float):
-	print(\"Testing 1TWO3\")
-	print(blackboard.get_var(\"path_length_var\"))
-	var ss = (blackboard.get_var(\"unit_ap_var\"))
-	print(ss)
-	return SUCCESS
-
-"
-
-[sub_resource type="BTConsolePrint" id="BTConsolePrint_2cvlk"]
-script = SubResource("GDScript_d2f8o")
 
 [sub_resource type="BBNode" id="BBNode_pah0c"]
 saved_value = NodePath("Combatants/Opponent Combatant Group")
@@ -132,11 +123,17 @@ value_source = 1
 variable = &"closest_name_position"
 resource_name = "$closest_name_position"
 
+[sub_resource type="BBVariant" id="BBVariant_nb0ri"]
+type = 24
+value_source = 1
+variable = &"unit_stat_sheet"
+resource_name = "$unit_stat_sheet"
+
 [sub_resource type="BTCallMethod" id="BTCallMethod_o5wi0"]
 node = ExtResource("1_g0yeh")
 method = &"find_path_AI"
 result_var = &"path_to_enemy"
-args = Array[BBVariant]([SubResource("BBVariant_qe4kr"), SubResource("BBVariant_7uuc3")])
+args = Array[BBVariant]([SubResource("BBVariant_qe4kr"), SubResource("BBVariant_7uuc3"), SubResource("BBVariant_nb0ri")])
 custom_name = "Return Path To Position"
 
 [sub_resource type="BBVariant" id="BBVariant_pnmvw"]
@@ -145,35 +142,47 @@ saved_value = 1
 resource_name = "1"
 
 [sub_resource type="BTCheckVar" id="BTCheckVar_oes38"]
-variable = &"path_to_enemy"
+variable = &"path_length_var"
 check_type = 3
 value = SubResource("BBVariant_pnmvw")
 custom_name = "Check If Next To"
 script = ExtResource("2_k5kwd")
 
-[sub_resource type="BBVariant" id="BBVariant_65ypp"]
-type = 9
+[sub_resource type="BBVariant" id="BBVariant_yxj55"]
+type = 36
 value_source = 1
 variable = &"path_to_enemy"
 resource_name = "$path_to_enemy"
 
-[sub_resource type="BBVariant" id="BBVariant_b0xc3"]
-type = 4
-value_source = 1
-variable = &"enemy_node_number"
-resource_name = "$enemy_node_number"
-
-[sub_resource type="BBVariant" id="BBVariant_35tfm"]
-type = 4
-value_source = 1
-variable = &"unit_name"
-resource_name = "$unit_name"
-
-[sub_resource type="BTCallMethod" id="BTCallMethod_bupqa"]
+[sub_resource type="BTCallMethod" id="BTCallMethod_vs5w0"]
 node = ExtResource("1_g0yeh")
-method = &"move_ai_unit_along_path"
-args = Array[BBVariant]([SubResource("BBVariant_65ypp"), SubResource("BBVariant_b0xc3"), SubResource("BBVariant_35tfm")])
-custom_name = "Move Unit Along Path"
+method = &"get_last_element"
+result_var = &"target_position_vec3"
+args = Array[BBVariant]([SubResource("BBVariant_yxj55")])
+custom_name = "Get Last Element Of PackedVector3"
+
+[sub_resource type="GDScript" id="GDScript_d2f8o"]
+script/source = "@tool
+extends BTConsolePrint
+
+func _tick(delta: float):
+	print(\"Testing 1TWO3\")
+	print(blackboard.get_var(\"path_length_var\"))
+	var ss = (blackboard.get_var(\"target_position_vec3\"))
+	print(ss)
+	print(blackboard.get_var(\"unit_name\"))
+	return SUCCESS
+
+"
+
+[sub_resource type="BTConsolePrint" id="BTConsolePrint_2cvlk"]
+script = SubResource("GDScript_d2f8o")
+
+[sub_resource type="BTAction" id="BTAction_6l455"]
+script = ExtResource("3_4471d")
+Queue_Type = ""
+target_position = Vector3(0, 0, 0)
+unit_name = ""
 
 [sub_resource type="BBVariant" id="BBVariant_owtiy"]
 type = 2
@@ -187,7 +196,22 @@ operation = 2
 
 [sub_resource type="BTSequence" id="BTSequence_uk0qb"]
 custom_name = "Stride To Closest Enemy"
-children = [SubResource("BTConsolePrint_2cvlk"), SubResource("BTCallMethod_51oq7"), SubResource("BTCallMethod_uiil6"), SubResource("BTCallMethod_o5wi0"), SubResource("BTCheckVar_oes38"), SubResource("BTCallMethod_bupqa"), SubResource("BTSetVar_q4khb")]
+children = [SubResource("BTCallMethod_51oq7"), SubResource("BTCallMethod_uiil6"), SubResource("BTCallMethod_o5wi0"), SubResource("BTCheckVar_oes38"), SubResource("BTCallMethod_vs5w0"), SubResource("BTConsolePrint_2cvlk"), SubResource("BTAction_6l455"), SubResource("BTSetVar_q4khb")]
+
+[sub_resource type="BBVariant" id="BBVariant_nytqv"]
+type = 2
+saved_value = 1
+resource_name = "1"
+
+[sub_resource type="BTCheckVar" id="BTCheckVar_uycn3"]
+variable = &"path_length_var"
+check_type = 3
+value = SubResource("BBVariant_nytqv")
+custom_name = "Check If Next To"
+script = ExtResource("2_k5kwd")
+
+[sub_resource type="BTInvert" id="BTInvert_0jyhi"]
+children = [SubResource("BTCheckVar_uycn3")]
 
 [sub_resource type="BBNode" id="BBNode_oio0p"]
 saved_value = NodePath("Combatants/Opponent Combatant Group/Enemy 1/Controllers/AI Controller")
@@ -259,11 +283,15 @@ children = [SubResource("BTCallMethod_67njj"), SubResource("BTCallMethod_wf83d")
 
 [sub_resource type="BTSequence" id="BTSequence_sgajg"]
 custom_name = "Melee Attack"
-children = [SubResource("BTSequence_ggivu")]
+children = [SubResource("BTInvert_0jyhi"), SubResource("BTSequence_ggivu")]
 
-[sub_resource type="BTSequence" id="BTSequence_r0cxq"]
+[sub_resource type="BTSequence" id="BTSequence_u3o6c"]
+custom_name = "Actions"
 children = [SubResource("BTCheckVar_aa21y"), SubResource("BTSequence_uk0qb"), SubResource("BTSequence_sgajg")]
+
+[sub_resource type="BTSelector" id="BTSelector_obdfm"]
+children = [SubResource("BTSequence_u3o6c")]
 
 [resource]
 blackboard_plan = SubResource("BlackboardPlan_60i7a")
-root_task = SubResource("BTSequence_r0cxq")
+root_task = SubResource("BTSelector_obdfm")

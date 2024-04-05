@@ -4,8 +4,11 @@
 
 extends Node
 
+
 signal turn_switched(new_turn)
 signal position_updated(is_enemy, unit_id, new_position)
+signal snapshot(player_positions, enemy_positions, enemy_roster)
+@onready var plan_service = $Services/PlanService
 
 
 
@@ -17,8 +20,10 @@ var blank_dictionary := {}
 var enemy_count = {}  # A dictionary to keep track of the number of each type of enemy
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	pass
 
+func contestie():
+	print("CONTESTIEEEE")
 func add_enemy_to_roster(name: String):
 	print("Add Ennemy To Roster %s" %name)
 	# Extract base name without numeric suffix
@@ -99,3 +104,13 @@ func update_position(is_enemy, unit_id, new_position):
 	positions[unit_id] = new_position
 	# Notify other parts of the game that a unit has moved
 	emit_signal("position_updated", is_enemy, unit_id, new_position)
+
+# Function to send the current state snapshot to PlanState when it's the enemy's turn.
+func send_state_to_plan_state():
+	print("Sending Plan")
+	var planning = Planning
+
+	print(plan_service)
+	# Assuming PlanState is a singleton or adjust the path as needed
+	planning._initialize_with_snapshot(player_positions, enemy_positions, enemy_roster)
+		

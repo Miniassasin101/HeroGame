@@ -1,9 +1,10 @@
-[gd_scene load_steps=23 format=3 uid="uid://dj4auo5l5jt6j"]
+[gd_scene load_steps=24 format=3 uid="uid://dj4auo5l5jt6j"]
 
 [ext_resource type="Script" path="res://Maps/Pathfinding.gd" id="1_mi66x"]
 [ext_resource type="Script" path="res://Maps/Level Prototyping/Map/Camera3D.gd" id="2_6rcn4"]
 [ext_resource type="Script" path="res://Maps/CombatResolution.gd" id="2_xw6a5"]
 [ext_resource type="MeshLibrary" uid="uid://cdbd5em8h5241" path="res://Maps/Level Prototyping/3d Tiles/Meshlibraries/meshi.tres" id="3_wir3f"]
+[ext_resource type="Script" path="res://Maps/PlanService.gd" id="3_wroun"]
 [ext_resource type="Script" path="res://Maps/Player Combatant Group.gd" id="4_4m48r"]
 [ext_resource type="Script" path="res://Maps/Animation Controller.gd" id="4_k34dh"]
 [ext_resource type="Script" path="res://Maps/Combatants.gd" id="5_l8qr6"]
@@ -40,6 +41,9 @@ script = ExtResource("1_mi66x")
 
 [node name="Combat Service" type="Node" parent="Services"]
 script = ExtResource("2_xw6a5")
+
+[node name="PlanService" type="Node" parent="Services"]
+script = ExtResource("3_wroun")
 
 [node name="Environment" type="Node" parent="."]
 
