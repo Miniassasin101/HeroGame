@@ -1,4 +1,4 @@
-# PlanState.gd
+# Planning.gd
 #this is an autoloaded script that serves as a temporary worldstate for the ai to plan on
 extends Node
 
@@ -10,8 +10,15 @@ var snapshot_player_positions := {}
 var snapshot_enemy_positions := {}
 var snapshot_enemy_roster := {}
 
+# Keep track of the last unit that had an ability queued
+var last_unit_queued: String = ""
 
+func _input(event):
+	if event.is_action_pressed("Test T"):
+		print("Test T Planning")
+		print("Queued abilities: ", queued_abilities)
 
+		
 
 func _ready():
 	pass
@@ -24,19 +31,22 @@ func _initialize_with_snapshot(player_positions, enemy_positions, enemy_roster):
 	snapshot_player_positions = player_positions.duplicate()
 	snapshot_enemy_positions = enemy_positions.duplicate()
 	snapshot_enemy_roster = enemy_roster.duplicate()
+	queued_abilities = []
 	print(snapshot_enemy_positions)
 	print("Snapshot initialized with current WorldState.")
 
-func queue_move_ability(target_position: Vector3, unit_name: String):
+func queue_move_ability(target_position: Vector3, unit_name: String, unit_path: PackedVector3Array):
 	print("Move Ability Queueing")
 	# Create a new ability dict representing the move action
 	var ability = {
 		"type": "move",
 		"unit": unit_name,
-		"target_position": target_position
+		"target_position": target_position,
+		"unit_path": unit_path,
 	}
 	# Queue the move ability
-	queued_abilities.append(ability)
+	#queued_abilities.append(ability)
+	queue_ability(ability)
 	# Update the snapshot_enemy_positions as if there was a unit at the target position
 	snapshot_enemy_positions[unit_name] = target_position
 	print("Position Updated: ")
@@ -44,9 +54,23 @@ func queue_move_ability(target_position: Vector3, unit_name: String):
 	print(snapshot_enemy_positions)
 
 func queue_ability(ability):
-	# Simulate ability effect in PlanState
-	simulate_ability(ability)
+	if ability.has("unit") and ability["unit"] != last_unit_queued:
+		# Add a sync marker if this is a new unit
+		add_sync_marker()
+		# Simulate ability effect in PlanState
+	# Queue the ability and update the last queued unit
 	queued_abilities.append(ability)
+	last_unit_queued = ability.get("unit", "")
+
+func add_sync_marker():
+	# Only add a sync marker if there's at least one ability queued
+	# and the last item isn't already a sync marker to prevent consecutive markers.
+	if queued_abilities.size() > 0 and (queued_abilities[-1] as Dictionary).get("type") != "sync":
+		queued_abilities.append({"type": "sync"})
+		print("Sync Marker Added")
+
+func combo_ship():
+	ComboMoveAnalyzer.shiptest(queued_abilities)
 
 func simulate_ability(ability):
 	# Example: If ability is 'move', update unit's position in PlanState
@@ -57,19 +81,12 @@ func simulate_ability(ability):
 	# Add more simulations as needed
 
 func simulate_move(ability):
-	var unit = ability.unit
-	var target_position = ability.target_position
-	# Update unit's position in PlanState
-	# Ensure to clone or deep-copy objects if needed to not affect WorldState
+	pass
 
 func simulate_attack(ability):
-	var unit = ability.unit
-	var target_unit = ability.target
-	var damage = ability.damage
-	# Simulate attack and update target unit's health in PlanState
+	pass
 
-func add_sync_marker():
-	sync_markers.append(len(queued_abilities))
+
 
 func execute_plan():
 	pass

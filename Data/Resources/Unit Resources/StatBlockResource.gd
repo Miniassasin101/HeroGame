@@ -6,7 +6,7 @@ class_name StatBlockResource
 @export var name: String
 @export var rank: int = 1
 @export var internal_level: int = 1
-
+@export var enemy_number: String = ""
 # Actions
 @export var actions: Array = []
 # Base Core Stats
@@ -29,6 +29,7 @@ class_name StatBlockResource
 @export var ap: int = 3
 @export var movement: int = 3
 @export var equipped_weapon: WeaponStatsResource
+
 func _init():
 	calculate_derived_stats()
 

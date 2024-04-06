@@ -16,6 +16,7 @@ func turn_start():
 			# Call the 'begin' method on the child
 			child.call("begin")
 			print("Begin Called")
+	Planning.combo_ship()
 
 
 func end_turn():

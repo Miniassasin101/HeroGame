@@ -55,13 +55,8 @@ func get_base_type(name: String) -> String:
 
 
 
-func _input(event):
-	if event.is_action_pressed("Test T"):
-		print("T- Selected Unit Registration for enemy positions")
-		print(enemy_positions["Wolf"])
-		#print(enemy_roster["Dio"])
-		#print(enemy_roster["Dio"].name)
-		#print(UnitBus.character_roster["Sol"].name)
+
+
 
 # Method to update the position of a unit
 func update_unit_position(unit_name: String, new_position: Vector3, is_enemy: bool = false):

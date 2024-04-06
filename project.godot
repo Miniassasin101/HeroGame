@@ -25,6 +25,7 @@ UnitBus="*res://Buses/UnitBus.gd"
 LevelBus="*res://Buses/LevelBus.gd"
 WorldState="*res://Data/Game States/WorldState.gd"
 Planning="*res://Data/Game States/Planning.gd"
+ComboMoveAnalyzer="*res://Data/Game States/ComboMoveAnalyzer.gd"
 
 [dialogue_manager]
 

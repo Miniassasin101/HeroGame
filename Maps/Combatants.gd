@@ -43,7 +43,8 @@ func _on_group_turn_finished():
 
 	#if current_group_index == 1:
 	#	current_test_enemy.update()
-	oppgroup.turn_start()
+	if LevelBus.turn == "enemy":
+		oppgroup.turn_start()
 	
 	LevelBus.updater()
 	groups[current_group_index].start_turn()

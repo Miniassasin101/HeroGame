@@ -1,10 +1,8 @@
-[gd_resource type="BehaviorTree" load_steps=48 format=3 uid="uid://d3n17chf6pmom"]
+[gd_resource type="BehaviorTree" load_steps=29 format=3 uid="uid://d3n17chf6pmom"]
 
 [ext_resource type="BBNode" uid="uid://0demvrghyqcn" path="res://ai/tasks/pathfinding_bb_node.tres" id="1_g0yeh"]
 [ext_resource type="Script" path="res://ai/tasks/CheckIfAtPath.gd" id="2_k5kwd"]
 [ext_resource type="Script" path="res://ai/tasks/QueueMove.gd" id="3_4471d"]
-[ext_resource type="BBNode" uid="uid://b3vrj2l2i2s81" path="res://ai/tasks/Combatants_Node.tres" id="3_k4mlt"]
-[ext_resource type="BBNode" uid="uid://dujdt7v7os4vs" path="res://ai/tasks/Combat_Service_Node.tres" id="4_20kd1"]
 
 [sub_resource type="Resource" id="Resource_kmxge"]
 
@@ -171,6 +169,10 @@ func _tick(delta: float):
 	var ss = (blackboard.get_var(\"target_position_vec3\"))
 	print(ss)
 	print(blackboard.get_var(\"unit_name\"))
+	var unit_name = blackboard.get_var(\"unit_name\")
+	var startpos = Planning.snapshot_enemy_positions[unit_name]
+	blackboard.set_var(\"current_position\", startpos)
+	print(blackboard.get_var(\"unit_ap_var\"))
 	return SUCCESS
 
 "
@@ -198,100 +200,13 @@ operation = 2
 custom_name = "Stride To Closest Enemy"
 children = [SubResource("BTCallMethod_51oq7"), SubResource("BTCallMethod_uiil6"), SubResource("BTCallMethod_o5wi0"), SubResource("BTCheckVar_oes38"), SubResource("BTCallMethod_vs5w0"), SubResource("BTConsolePrint_2cvlk"), SubResource("BTAction_6l455"), SubResource("BTSetVar_q4khb")]
 
-[sub_resource type="BBVariant" id="BBVariant_nytqv"]
-type = 2
-saved_value = 1
-resource_name = "1"
-
-[sub_resource type="BTCheckVar" id="BTCheckVar_uycn3"]
-variable = &"path_length_var"
-check_type = 3
-value = SubResource("BBVariant_nytqv")
-custom_name = "Check If Next To"
-script = ExtResource("2_k5kwd")
-
-[sub_resource type="BTInvert" id="BTInvert_0jyhi"]
-children = [SubResource("BTCheckVar_uycn3")]
-
-[sub_resource type="BBNode" id="BBNode_oio0p"]
-saved_value = NodePath("Combatants/Opponent Combatant Group/Enemy 1/Controllers/AI Controller")
-resource_name = "Combatants/Opponent Combatant Group/Enemy 1/Controllers/AI Controller"
-
-[sub_resource type="BTCallMethod" id="BTCallMethod_67njj"]
-node = SubResource("BBNode_oio0p")
-method = &"find_closest_player_position"
-result_var = &"closest_name_position"
-args = Array[BBVariant]([SubResource("BBVariant_5if5a")])
-custom_name = "Find Closest Player Position"
-
-[sub_resource type="BBNode" id="BBNode_k3i7b"]
-saved_value = NodePath("Services/Navigation Service/Pathfinding")
-resource_name = "Services/Navigation Service/Pathfinding"
-
-[sub_resource type="BTCallMethod" id="BTCallMethod_wf83d"]
-node = SubResource("BBNode_k3i7b")
-method = &"find_path_AI"
-result_var = &"path_to_enemy"
-args = Array[BBVariant]([SubResource("BBVariant_qe4kr"), SubResource("BBVariant_7uuc3")])
-custom_name = "Return Path To Position"
-
-[sub_resource type="BBVariant" id="BBVariant_21vnn"]
-type = 4
-saved_value = "false"
-resource_name = "false"
-
-[sub_resource type="BTCheckVar" id="BTCheckVar_lxckw"]
-variable = &"path_to_enemy"
-value = SubResource("BBVariant_21vnn")
-custom_name = "Check path_to_enemy"
-
-[sub_resource type="BTInvert" id="BTInvert_whm08"]
-children = [SubResource("BTCheckVar_lxckw")]
-
-[sub_resource type="BBVariant" id="BBVariant_a4kjg"]
-type = 9
-value_source = 1
-variable = &"closest_name_position"
-resource_name = "$closest_name_position"
-
-[sub_resource type="BTCallMethod" id="BTCallMethod_rqp87"]
-node = ExtResource("3_k4mlt")
-method = &"target_query"
-result_var = &"target_name_var"
-args = Array[BBVariant]([SubResource("BBVariant_a4kjg")])
-custom_name = "Find Target Player At Position"
-
-[sub_resource type="BBVariant" id="BBVariant_cnr8n"]
-type = 24
-value_source = 1
-variable = &"unit_stat_sheet"
-resource_name = "$unit_stat_sheet"
-
-[sub_resource type="BBVariant" id="BBVariant_fkrmy"]
-value_source = 1
-variable = &"target_name_var"
-resource_name = "$target_name_var"
-
-[sub_resource type="BTCallMethod" id="BTCallMethod_am2fo"]
-node = ExtResource("4_20kd1")
-method = &"ai_execute_combat_converter"
-args = Array[BBVariant]([SubResource("BBVariant_cnr8n"), SubResource("BBVariant_fkrmy")])
-custom_name = "Execute Attack Target By Name"
-
-[sub_resource type="BTSequence" id="BTSequence_ggivu"]
-children = [SubResource("BTCallMethod_67njj"), SubResource("BTCallMethod_wf83d"), SubResource("BTInvert_whm08"), SubResource("BTCallMethod_rqp87"), SubResource("BTCallMethod_am2fo")]
-
-[sub_resource type="BTSequence" id="BTSequence_sgajg"]
-custom_name = "Melee Attack"
-children = [SubResource("BTInvert_0jyhi"), SubResource("BTSequence_ggivu")]
-
-[sub_resource type="BTSequence" id="BTSequence_u3o6c"]
+[sub_resource type="BTSequence" id="BTSequence_fn2bw"]
 custom_name = "Actions"
-children = [SubResource("BTCheckVar_aa21y"), SubResource("BTSequence_uk0qb"), SubResource("BTSequence_sgajg")]
+children = [SubResource("BTCheckVar_aa21y"), SubResource("BTSequence_uk0qb")]
 
-[sub_resource type="BTSelector" id="BTSelector_obdfm"]
-children = [SubResource("BTSequence_u3o6c")]
+[sub_resource type="BTSequence" id="BTSequence_ak8tq"]
+children = [SubResource("BTSequence_fn2bw")]
 
 [resource]
 blackboard_plan = SubResource("BlackboardPlan_60i7a")
-root_task = SubResource("BTSelector_obdfm")
+root_task = SubResource("BTSequence_ak8tq")

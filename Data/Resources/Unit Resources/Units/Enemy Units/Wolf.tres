@@ -22,5 +22,5 @@ conviction = 12
 hp = 15
 current_hp = null
 ap = 3
-movement = 8
+movement = 3
 equipped_weapon = ExtResource("1_qkmmy")

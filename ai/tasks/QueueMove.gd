@@ -6,7 +6,8 @@ extends BTAction
 @export var unit_name: String
 
 func _tick(delta: float):
-	var enemy_node_number = blackboard.get_var("unit_name")
+	var unit_name = blackboard.get_var("unit_name")
 	var target_position = blackboard.get_var("target_position_vec3")
-	Planning.queue_move_ability(target_position, enemy_node_number)
+	var unit_path = blackboard.get_var("path_to_enemy")
+	Planning.queue_move_ability(target_position, unit_name, unit_path)
 	print("MoveQueue Kal")
