@@ -60,6 +60,7 @@ func find_path_and_move_sprite(start_pos: Vector3, end_pos: Vector3):
 	else:
 		print("No path found between the specified points.")
 
+
 #Method for handling Ai
 func find_path_AI(start_pos: Vector3, end_pos: Vector3, unit: StatBlockResource):
 	update_astar_based_on_units()# Make sure the AStar3D map is updated before finding a path
@@ -112,7 +113,7 @@ func find_path_AI(start_pos: Vector3, end_pos: Vector3, unit: StatBlockResource)
 
 func move_ai_unit_along_path(path: PackedVector3Array, enemy_name: String, unit_name: String):
 	# Check if the path is not empty and unit_name is valid
-	print("Nammes")
+	print("Move Ai Along Path Names")
 	print(unit_name)
 	print(enemy_name)
 	var duration_per_segment = 0.3 # Adjust based on how fast you want the sprite to move
@@ -144,13 +145,13 @@ func move_ai_unit_along_path(path: PackedVector3Array, enemy_name: String, unit_
 		# Animate the sprite from its current position to the next one in the path
 		tween.tween_property(sprite_to_move, "position", Vector3(actual_to_position), duration_per_segment).set_trans(0).set_ease(2)
 		WorldState.update_unit_position(unit_name, reg_to_position, true)
-		bt.set_bb_pos_var(reg_to_position)
+		#bt.set_bb_pos_var(reg_to_position)
 		print(reg_to_position)
 		# If not the last segment, chain the next movement
 		if i < path.size() - 2:
 			tween.chain()
 	tween.play()
-	update_astar_based_on_units()
+	#update_astar_based_on_units()
 
 
 

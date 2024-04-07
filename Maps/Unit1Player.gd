@@ -38,8 +38,9 @@ func update_trigger():
 	var unit_name = blackboard.get_var("unit_name")
 	var startpos = Planning.snapshot_enemy_positions[unit_name]
 	var apnum = blackboard.get_var("unit_ap_var")
-	blackboard.set_var("current_position", startpos)
 	while apnum > 0:
+		startpos = Planning.snapshot_enemy_positions[unit_name]
+		blackboard.set_var("current_position", startpos)
 		update(0)
 		apnum -= 1
 

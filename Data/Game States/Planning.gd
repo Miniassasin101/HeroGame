@@ -2,6 +2,10 @@
 #this is an autoloaded script that serves as a temporary worldstate for the ai to plan on
 extends Node
 
+signal moveparse(unit_path, enemy_number, unit_name)
+signal move_completed()
+signal execute_plan(plan)
+
 var world_state: WorldState
 var queued_abilities = []
 var sync_markers = []
@@ -10,6 +14,7 @@ var snapshot_player_positions := {}
 var snapshot_enemy_positions := {}
 var snapshot_enemy_roster := {}
 
+var actions_pending = 0
 # Keep track of the last unit that had an ability queued
 var last_unit_queued: String = ""
 
@@ -70,7 +75,8 @@ func add_sync_marker():
 		print("Sync Marker Added")
 
 func combo_ship():
-	ComboMoveAnalyzer.shiptest(queued_abilities)
+	var combo_plan = ComboMoveAnalyzer.shiptest(queued_abilities)
+	execute_plan.emit(combo_plan)
 
 func simulate_ability(ability):
 	# Example: If ability is 'move', update unit's position in PlanState
@@ -88,6 +94,27 @@ func simulate_attack(ability):
 
 
 
-func execute_plan():
+
+func move_execute(unit_path, enemy_number, unit_name):
+	# Start move action and emit a signal upon completion.
+	# Assuming you have a mechanism or a node that handles move actions and signals completion.
+	print("Signal EMitted")
+	moveparse.emit(unit_path, enemy_number, unit_name)
+	
+	#when   # This awaits a signal named 'signal_move_completed' from the node.
+	print("Move action completed for unit:", unit_name)
+	return true
+	
+
+func signal_emitter():
+	emit_signal("move_completed")
+
+
+func attack_execute(unit, target_position):
+	# Start attack action and emit a signal upon completion.
+	# Assuming a similar setup for handling attack actions.
+	#var attacknode = get_node("Services/Combat Service/Ability And Attack Service")
+	#attacknode.attackparse()
+	#await attacknode.attack_completed  # This awaits a signal named 'signal_attack_completed' from the node.
+	#print("Attack action completed for unit:", unit)
 	pass
-	# Logic to execute queued abilities in real game world, up to next sync marker

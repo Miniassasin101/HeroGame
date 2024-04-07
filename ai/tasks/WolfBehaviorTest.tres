@@ -1,4 +1,4 @@
-[gd_resource type="BehaviorTree" load_steps=29 format=3 uid="uid://d3n17chf6pmom"]
+[gd_resource type="BehaviorTree" load_steps=27 format=3 uid="uid://d3n17chf6pmom"]
 
 [ext_resource type="BBNode" uid="uid://0demvrghyqcn" path="res://ai/tasks/pathfinding_bb_node.tres" id="1_g0yeh"]
 [ext_resource type="Script" path="res://ai/tasks/CheckIfAtPath.gd" id="2_k5kwd"]
@@ -72,16 +72,6 @@ var/target_position_vec3/type = 9
 var/target_position_vec3/value = Vector3(0, 0, 0)
 var/target_position_vec3/hint = 0
 var/target_position_vec3/hint_string = ""
-
-[sub_resource type="BBVariant" id="BBVariant_u8t6b"]
-type = 2
-saved_value = 0
-resource_name = "0"
-
-[sub_resource type="BTCheckVar" id="BTCheckVar_aa21y"]
-variable = &"unit_ap_var"
-check_type = 3
-value = SubResource("BBVariant_u8t6b")
 
 [sub_resource type="BBNode" id="BBNode_pah0c"]
 saved_value = NodePath("Combatants/Opponent Combatant Group")
@@ -202,7 +192,7 @@ children = [SubResource("BTCallMethod_51oq7"), SubResource("BTCallMethod_uiil6")
 
 [sub_resource type="BTSequence" id="BTSequence_fn2bw"]
 custom_name = "Actions"
-children = [SubResource("BTCheckVar_aa21y"), SubResource("BTSequence_uk0qb")]
+children = [SubResource("BTSequence_uk0qb")]
 
 [sub_resource type="BTSequence" id="BTSequence_ak8tq"]
 children = [SubResource("BTSequence_fn2bw")]

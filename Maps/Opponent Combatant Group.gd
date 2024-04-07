@@ -16,6 +16,7 @@ func turn_start():
 			# Call the 'begin' method on the child
 			child.call("begin")
 			print("Begin Called")
+			#await get_tree().create_timer(5.0).timeout
 	Planning.combo_ship()
 
 
