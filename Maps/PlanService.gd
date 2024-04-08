@@ -29,6 +29,7 @@ func execute_plan(plan):
 
 			# Wait for all coroutines in the group to complete.
 			for coroutine in coroutines:
+				print("CoRo")
 				await coroutine
 
 		elif item["type"] == "sync":
