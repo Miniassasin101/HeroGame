@@ -35,7 +35,7 @@ func _on_group_turn_finished():
 			# Assuming reset_ap() is a method within each character's stats resource or similar object
 			character.reset_ap()
 			print(character.name + "'s AP has been reset.")
-			WorldState.send_state_to_plan_state()
+			
 		#for enemy_key in WorldState.enemy_roster.keys():
 			#var character =
 	# Start the next group's turn
@@ -44,8 +44,10 @@ func _on_group_turn_finished():
 	#if current_group_index == 1:
 	#	current_test_enemy.update()
 	if LevelBus.turn == "enemy":
+		WorldState.send_state_to_plan_state()
 		oppgroup.turn_start()
-	
+	#if LevelBus.turn == "player":
+		
 	LevelBus.updater()
 	groups[current_group_index].start_turn()
 

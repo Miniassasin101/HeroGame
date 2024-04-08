@@ -10,8 +10,7 @@ func set_node_name(unit_name):
 	Name = unit_name
 	print("SelfName:")
 	print(Name)
-	WorldState.enemy_roster[unit_name].enemy_number = self.name
-	print(WorldState.enemy_roster[unit_name].enemy_number)
+	self.name = unit_name
 	var btplayer1 = get_child(1)
 	var btplayer2 = btplayer1.get_child(0)
 	btplayer3 = btplayer2.get_child(0)

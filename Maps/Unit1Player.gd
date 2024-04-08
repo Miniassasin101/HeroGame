@@ -25,8 +25,9 @@ func set_unit_name_var(unit_name):
 	var ap = (blackboard.get_var("unit_stat_sheet").ap)
 	blackboard.set_var("unit_ap_var", ap)
 func set_enemy_node_name(enemy_name):
-	print("Setting Enemy Name")
-	blackboard.set_var("enemy_node_number", enemy_name)
+	#print("Setting Enemy Name")
+	#blackboard.set_var("enemy_node_number", enemy_name)
+	pass
 	
 func _input(event):
 	#End Turn Hotkey
@@ -38,6 +39,7 @@ func update_trigger():
 	var unit_name = blackboard.get_var("unit_name")
 	var startpos = Planning.snapshot_enemy_positions[unit_name]
 	var apnum = blackboard.get_var("unit_ap_var")
+	print("Statistics: ", unit_name, startpos, apnum)
 	while apnum > 0:
 		startpos = Planning.snapshot_enemy_positions[unit_name]
 		blackboard.set_var("current_position", startpos)

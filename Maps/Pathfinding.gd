@@ -119,9 +119,9 @@ func move_ai_unit_along_path(path: PackedVector3Array, enemy_name: String, unit_
 	var duration_per_segment = 0.3 # Adjust based on how fast you want the sprite to move
 
 	# Access the Unit's AnimationController to get the Sprite3D
-	var animation_controller_path = "Combatants/Opponent Combatant Group/%s/Controllers/Animation Controller" % enemy_name
+	var animation_controller_path = "Combatants/Opponent Combatant Group/%s/Controllers/Animation Controller" % unit_name
 	var animation_controller = get_node("../../..").get_node(animation_controller_path)
-	var btpath = "Combatants/Opponent Combatant Group/%s/Controllers/AI Controller/BTPlayer" % enemy_name
+	var btpath = "Combatants/Opponent Combatant Group/%s/Controllers/AI Controller/BTPlayer" % unit_name
 	var bt = get_node("../../..").get_node(btpath)
 
 	# Check if the animation controller and Sprite3D node exist
@@ -154,6 +154,29 @@ func move_ai_unit_along_path(path: PackedVector3Array, enemy_name: String, unit_
 	#update_astar_based_on_units()
 
 
+# In a script that needs to find the closest player position
+func find_closest_player_position(unit_position) -> Vector3:
+	print("Please activate at least")
+	print(unit_position)
+	var world_state = WorldState # Access the autoloaded WorldState
+	var min_distance = INF # Start with infinity as the minimum distance
+	var closest_player_name = ""
+	var closest_player_position = Vector3()
+
+	# Iterate through player positions to find the closest one
+	for player_name in world_state.player_positions.keys():
+		var player_position = world_state.player_positions[player_name]
+		var distance = unit_position.distance_to(player_position)
+
+		if distance < min_distance:
+			min_distance = distance
+			closest_player_name = player_name
+			closest_player_position = player_position
+
+	# Return both the position and name of the closest player
+	print("Closest Player Position: ")
+	print(closest_player_position)
+	return (closest_player_position)
 
 func move_sprite_along_path(path: PackedVector3Array):
 	var tween = get_tree().create_tween()

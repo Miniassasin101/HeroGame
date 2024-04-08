@@ -4,7 +4,7 @@ var movement_queue = []
 var is_processing_movement = false
 @onready var controller = get_parent()
 @onready var enemy_count = {}  # A dictionary to keep track of the number of each type of enemy
-@onready var duration_per_segment = .3 # Adjust based on how fast you want the sprite to move
+@onready var duration_per_segment = .6 # Adjust based on how fast you want the sprite to move
 # Called when the node enters the scene tree for the first time.
 func _ready():
 #Places a sprite in the game world based on the character's name that it's given
@@ -19,8 +19,8 @@ func _ready():
 	else:
 		print("Failed to load texture at path: " + texture_path)
 	sprite_3d.set_billboard_mode(1)
-	var ranx = randi_range(2, 6) 
-	var rany = randi_range(2, 6)
+	var ranx = randi_range(1, 8) 
+	var rany = randi_range(1, 8)
 	var startpos = Vector3(ranx + 0.5, 1, rany + 0.5)
 	var updpos = startpos# + Vector3(-0.25, 0, -0.25)
 	sprite_3d.set_position(startpos)
@@ -70,6 +70,7 @@ func process_movement_queue():
 	while movement_queue.size() > 0:
 		var request = movement_queue.pop_front()
 		await move_ai_unit(request.path, request.name)
+
 	is_processing_movement = false
 		
 
@@ -79,7 +80,7 @@ func move_ai_unit(unit_path, unit_name):
 	if unit_path.size() == 0:
 		print("Path is empty:", unit_name)
 		return
-		
+	var actual_to_position = true
 	var reg_to_position = true
 	var sprite_to_move = get_child(0)
 	print("Sprite to move:", sprite_to_move)
@@ -90,7 +91,7 @@ func move_ai_unit(unit_path, unit_name):
 		var to_position = unit_path[i + 1]
 		print("To Position: ", to_position)
 		# Adjust positions as needed
-		var actual_to_position = to_position + Vector3(0, 1, 0)	# Example adjustment
+		actual_to_position = to_position + Vector3(0, 1, 0)	# Example adjustment
 		reg_to_position = to_position + Vector3(0, 0, 0)
 		# Animate sprite movement
 		tween.tween_property(sprite_to_move, "position", Vector3(to_position + Vector3(0, 1, 0)), \
@@ -98,7 +99,8 @@ func move_ai_unit(unit_path, unit_name):
 		
 		#if i < unit_path.size() - 2:
 		tween.chain()
-
+	print("RegToPosition: ", reg_to_position)
+	WorldState.update_unit_position(unit_name, actual_to_position, true)
 	#return true
 	tween.play()
 	await tween.finished

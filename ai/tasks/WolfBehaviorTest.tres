@@ -73,15 +73,6 @@ var/target_position_vec3/value = Vector3(0, 0, 0)
 var/target_position_vec3/hint = 0
 var/target_position_vec3/hint_string = ""
 
-[sub_resource type="BBNode" id="BBNode_pah0c"]
-saved_value = NodePath("Combatants/Opponent Combatant Group")
-resource_name = "Combatants/Opponent Combatant Group"
-
-[sub_resource type="BTCallMethod" id="BTCallMethod_51oq7"]
-node = SubResource("BBNode_pah0c")
-method = &"start_turn"
-result_var = &"test"
-
 [sub_resource type="BBVariant" id="BBVariant_5if5a"]
 type = 9
 value_source = 1
@@ -89,8 +80,10 @@ variable = &"current_position"
 resource_name = "$current_position"
 
 [sub_resource type="BBNode" id="BBNode_yigew"]
-saved_value = NodePath("Combatants/Opponent Combatant Group/Enemy 1/Controllers/AI Controller")
-resource_name = "Combatants/Opponent Combatant Group/Enemy 1/Controllers/AI Controller"
+saved_value = NodePath("Services/Navigation Service/Pathfinding")
+resource_name = "Services/Navigation Service/Pathfinding"
+
+[sub_resource type="GDScript" id="GDScript_40ldw"]
 
 [sub_resource type="BTCallMethod" id="BTCallMethod_uiil6"]
 node = SubResource("BBNode_yigew")
@@ -98,6 +91,7 @@ method = &"find_closest_player_position"
 result_var = &"closest_name_position"
 args = Array[BBVariant]([SubResource("BBVariant_5if5a")])
 custom_name = "Find Closest Player Position"
+script = SubResource("GDScript_40ldw")
 
 [sub_resource type="BBVariant" id="BBVariant_qe4kr"]
 type = 9
@@ -124,6 +118,27 @@ result_var = &"path_to_enemy"
 args = Array[BBVariant]([SubResource("BBVariant_qe4kr"), SubResource("BBVariant_7uuc3"), SubResource("BBVariant_nb0ri")])
 custom_name = "Return Path To Position"
 
+[sub_resource type="GDScript" id="GDScript_d2f8o"]
+script/source = "@tool
+extends BTConsolePrint
+
+func _tick(delta: float):
+	print(\"Testing 1TWO3\")
+	#print(blackboard.get_var(\"path_length_var\"))
+	#var ss = (blackboard.get_var(\"target_position_vec3\"))
+	#print(ss)
+	print(\"REGO\", blackboard.get_var(\"closest_name_position\"))
+	var unit_name = blackboard.get_var(\"unit_name\")
+	var startpos = Planning.snapshot_enemy_positions[unit_name]
+	blackboard.set_var(\"current_position\", startpos)
+	print(blackboard.get_var(\"unit_ap_var\"))
+	return SUCCESS
+
+"
+
+[sub_resource type="BTConsolePrint" id="BTConsolePrint_2cvlk"]
+script = SubResource("GDScript_d2f8o")
+
 [sub_resource type="BBVariant" id="BBVariant_pnmvw"]
 type = 2
 saved_value = 1
@@ -149,25 +164,7 @@ result_var = &"target_position_vec3"
 args = Array[BBVariant]([SubResource("BBVariant_yxj55")])
 custom_name = "Get Last Element Of PackedVector3"
 
-[sub_resource type="GDScript" id="GDScript_d2f8o"]
-script/source = "@tool
-extends BTConsolePrint
-
-func _tick(delta: float):
-	print(\"Testing 1TWO3\")
-	print(blackboard.get_var(\"path_length_var\"))
-	var ss = (blackboard.get_var(\"target_position_vec3\"))
-	print(ss)
-	print(blackboard.get_var(\"unit_name\"))
-	var unit_name = blackboard.get_var(\"unit_name\")
-	var startpos = Planning.snapshot_enemy_positions[unit_name]
-	blackboard.set_var(\"current_position\", startpos)
-	print(blackboard.get_var(\"unit_ap_var\"))
-	return SUCCESS
-
-"
-
-[sub_resource type="BTConsolePrint" id="BTConsolePrint_2cvlk"]
+[sub_resource type="BTConsolePrint" id="BTConsolePrint_3u647"]
 script = SubResource("GDScript_d2f8o")
 
 [sub_resource type="BTAction" id="BTAction_6l455"]
@@ -188,7 +185,7 @@ operation = 2
 
 [sub_resource type="BTSequence" id="BTSequence_uk0qb"]
 custom_name = "Stride To Closest Enemy"
-children = [SubResource("BTCallMethod_51oq7"), SubResource("BTCallMethod_uiil6"), SubResource("BTCallMethod_o5wi0"), SubResource("BTCheckVar_oes38"), SubResource("BTCallMethod_vs5w0"), SubResource("BTConsolePrint_2cvlk"), SubResource("BTAction_6l455"), SubResource("BTSetVar_q4khb")]
+children = [SubResource("BTCallMethod_uiil6"), SubResource("BTCallMethod_o5wi0"), SubResource("BTConsolePrint_2cvlk"), SubResource("BTCheckVar_oes38"), SubResource("BTCallMethod_vs5w0"), SubResource("BTConsolePrint_3u647"), SubResource("BTAction_6l455"), SubResource("BTSetVar_q4khb")]
 
 [sub_resource type="BTSequence" id="BTSequence_fn2bw"]
 custom_name = "Actions"

@@ -12,6 +12,7 @@ func _ready():
 
 func execute_plan(plan):
 	print("ZE PLANNN")
+	#var enumb = true
 	for item in plan:
 		if item["type"] == "combo":
 			var coroutines = []
@@ -20,9 +21,10 @@ func execute_plan(plan):
 					# Assuming move_execute is a function that returns a Thread when called,
 					# so we can wait for its completion.
 					print("He MOVE Yeeeee", action)
-					print(Planning.snapshot_enemy_roster[action["unit"]].enemy_number)
-					coroutines.append(await(move_execute(action["unit_path"], \
-					Planning.snapshot_enemy_roster[action["unit"]].enemy_number, action["unit"])))
+					print(action["unit"])
+					#enumb = (WorldState.enemy_roster[action["unit"]].enemy_number)
+					
+					coroutines.append(await(move_execute(action["unit_path"], action["unit"])))
 				elif action["type"] == "attack":
 					# Similarly, assuming attack_execute initiates the action and returns a Thread.
 					coroutines.append(await(attack_execute(action["unit"], action["target_position"])))
@@ -37,12 +39,12 @@ func execute_plan(plan):
 			print("Sync point reached, all prior actions completed.")
 			continue  # In this context, continue just moves to the next iteration of the loop, but sync handling could be more complex
 
-func move_execute(unit_path, enemy_number, unit_name):
+func move_execute(unit_path, unit_name):
 	# Start move action and emit a signal upon completion.
 	# Assuming you have a mechanism or a node that handles move actions and signals completion.
-	print("Signal EMitted")
-	#moveparse.emit(unit_path, enemy_number, unit_name)
-	await movement_service.moveparse(unit_path, enemy_number, unit_name)
+	print("Signal EMitted: ", unit_name)
+	#moveparse.emit(unit_path, unit_name)
+	await movement_service.moveparse(unit_path, unit_name)
 	#when   # This awaits a signal named 'signal_move_completed' from the node.
 	print("Move action completed for unit:", unit_name)
 	#await get_tree().create_timer(2).timeout
