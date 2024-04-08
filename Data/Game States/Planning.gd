@@ -99,7 +99,7 @@ func move_execute(unit_path, enemy_number, unit_name):
 	# Start move action and emit a signal upon completion.
 	# Assuming you have a mechanism or a node that handles move actions and signals completion.
 	print("Signal EMitted")
-	moveparse.emit(unit_path, enemy_number, unit_name)
+	#moveparse.emit(unit_path, enemy_number, unit_name)
 	
 	#when   # This awaits a signal named 'signal_move_completed' from the node.
 	print("Move action completed for unit:", unit_name)

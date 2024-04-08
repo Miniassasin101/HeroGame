@@ -61,17 +61,12 @@ func move_ai_unit_starter(unit_path, unit_name):
 	if not is_processing_movement:
 		is_processing_movement = true
 		process_movement_queue()
-	if movement_queue.size() == 0:
-		print("returning")
-		return true
-		
 	
 func process_movement_queue():
 	while movement_queue.size() > 0:
 		var request = movement_queue.pop_front()
 		await move_ai_unit(request.path, request.name)
 	is_processing_movement = false
-		
 
 func move_ai_unit(unit_path, unit_name):
 	print("Move Ai Unit Working")
@@ -83,9 +78,8 @@ func move_ai_unit(unit_path, unit_name):
 	var reg_to_position = true
 	var sprite_to_move = get_child(0)
 	print("Sprite to move:", sprite_to_move)
-	var tween = get_tree().create_tween().set_parallel(true)
+	var tween = get_tree().create_tween()
 	for i in range(unit_path.size() - 1):
-		#var tween = get_tree().create_tween().set_parallel(true)
 		var from_position = unit_path[i]
 		var to_position = unit_path[i + 1]
 		print("To Position: ", to_position)
@@ -93,16 +87,13 @@ func move_ai_unit(unit_path, unit_name):
 		var actual_to_position = to_position + Vector3(0, 1, 0)	# Example adjustment
 		reg_to_position = to_position + Vector3(0, 0, 0)
 		# Animate sprite movement
-		tween.tween_property(sprite_to_move, "position", Vector3(to_position + Vector3(0, 1, 0)), \
+		tween.tween_property(sprite_to_move, "position", Vector3(actual_to_position), \
 		duration_per_segment).set_trans(0).set_ease(2)
 		
 		#if i < unit_path.size() - 2:
 		tween.chain()
-
 	#return true
 	tween.play()
-	await tween.finished
 	print("Animation Complete")
-	
+	await tween.finished
 	return true
-		

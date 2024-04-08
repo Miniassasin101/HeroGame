@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dj4auo5l5jt6j"]
+[gd_scene load_steps=28 format=3 uid="uid://dj4auo5l5jt6j"]
 
 [ext_resource type="Script" path="res://Maps/Pathfinding.gd" id="1_mi66x"]
 [ext_resource type="Script" path="res://Maps/Level Prototyping/Map/Camera3D.gd" id="2_6rcn4"]
@@ -23,6 +23,8 @@
 [ext_resource type="Script" path="res://Maps/AI Controller.gd" id="12_oakmm"]
 [ext_resource type="Script" path="res://Maps/Unit1Player.gd" id="13_ki7ee"]
 [ext_resource type="BlackboardPlan" uid="uid://befbkeqm7t27y" path="res://ai/tasks/WolfBlackboard.tres" id="14_uptoo"]
+[ext_resource type="Script" path="res://Maps/Animation Controller2.gd" id="20_rmks2"]
+[ext_resource type="Script" path="res://Maps/Animation Controller3.gd" id="21_gxmcc"]
 
 [sub_resource type="Environment" id="Environment_j0j4p"]
 ambient_light_source = 3
@@ -208,7 +210,7 @@ script = ExtResource("13_ki7ee")
 [node name="Stats Controller" type="Node" parent="Combatants/Opponent Combatant Group/Enemy 2/Controllers"]
 
 [node name="Animation Controller" type="Node" parent="Combatants/Opponent Combatant Group/Enemy 2/Controllers"]
-script = ExtResource("8_o3i0j")
+script = ExtResource("20_rmks2")
 
 [node name="Action Overrides" type="Node" parent="Combatants/Opponent Combatant Group/Enemy 2"]
 
@@ -236,7 +238,7 @@ script = ExtResource("13_ki7ee")
 [node name="Stats Controller" type="Node" parent="Combatants/Opponent Combatant Group/Enemy 3/Controllers"]
 
 [node name="Animation Controller" type="Node" parent="Combatants/Opponent Combatant Group/Enemy 3/Controllers"]
-script = ExtResource("8_o3i0j")
+script = ExtResource("21_gxmcc")
 
 [node name="Action Overrides" type="Node" parent="Combatants/Opponent Combatant Group/Enemy 3"]
 

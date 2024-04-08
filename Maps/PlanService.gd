@@ -34,7 +34,7 @@ func execute_plan(plan):
 		elif item["type"] == "sync":
 			#TEST: Sync marker reached. Simply proceed as this indicates we should wait for all prior actions to complete
 			print("Sync point reached, all prior actions completed.")
-			#continue  # In this context, continue just moves to the next iteration of the loop, but sync handling could be more complex
+			continue  # In this context, continue just moves to the next iteration of the loop, but sync handling could be more complex
 
 func move_execute(unit_path, enemy_number, unit_name):
 	# Start move action and emit a signal upon completion.
@@ -44,7 +44,7 @@ func move_execute(unit_path, enemy_number, unit_name):
 	await movement_service.moveparse(unit_path, enemy_number, unit_name)
 	#when   # This awaits a signal named 'signal_move_completed' from the node.
 	print("Move action completed for unit:", unit_name)
-	#await get_tree().create_timer(0.5).timeout
+	#await get_tree().create_timer(2).timeout
 	return true
 	
 
